@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(identify \"c:/Users/David Dalisay/empath-interview-prep/IMG_8643.jpeg\")",
+      "WebFetch(domain:prepfully.com)",
+      "WebFetch(domain:learn.interviewkickstart.com)",
+      "WebFetch(domain:www.wonsulting.com)",
+      "WebFetch(domain:www.interviewkickstart.com)",
+      "WebSearch"
+    ]
+  }
+}
