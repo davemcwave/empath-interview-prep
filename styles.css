@@ -349,8 +349,8 @@ h1, h2, h3, h4 {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 60% 50% at 70% 30%, rgba(181, 113, 58, 0.08) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 60% at 20% 80%, rgba(29, 78, 95, 0.06) 0%, transparent 70%);
+    radial-gradient(ellipse 80% 50% at 60% 20%, rgba(181, 113, 58, 0.13) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 60% at 10% 90%, rgba(29, 78, 95, 0.09) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -456,9 +456,8 @@ h1, h2, h3, h4 {
 }
 
 .pillar-card__icon {
-  width: 48px;
-  height: 48px;
-  color: var(--color-teal);
+  font-size: 2.5rem;
+  line-height: 1;
   margin-bottom: var(--space-lg);
 }
 
@@ -1425,8 +1424,8 @@ h1, h2, h3, h4 {
   /* Hero */
   .hero {
     min-height: auto;
-    padding-top: calc(var(--nav-height) + var(--space-3xl));
-    padding-bottom: var(--space-4xl);
+    padding-top: calc(var(--nav-height) + var(--space-2xl));
+    padding-bottom: var(--space-3xl);
   }
 
   .hero__heading {
