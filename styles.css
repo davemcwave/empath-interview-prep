@@ -1940,3 +1940,17 @@ h1, h2, h3, h4 {
     transform: none;
   }
 }
+
+/* About section contact button: mobile shows mailto, desktop shows form */
+.about__contact-btn {
+  margin-top: var(--space-2xl);
+}
+
+.about__contact-btn--desktop {
+  display: none;
+}
+
+@media (min-width: 769px) {
+  .about__contact-btn--mobile { display: none !important; }
+  .about__contact-btn--desktop { display: inline-flex !important; }
+}
