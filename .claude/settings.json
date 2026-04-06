@@ -6,7 +6,8 @@
       "WebFetch(domain:learn.interviewkickstart.com)",
       "WebFetch(domain:www.wonsulting.com)",
       "WebFetch(domain:www.interviewkickstart.com)",
-      "WebSearch"
+      "WebSearch",
+      "WebFetch(domain:www.runwellclinic.com)"
     ]
   }
 }
