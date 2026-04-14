@@ -1,5 +1,5 @@
 /**
- * Client Portal — Dashboard
+ * Client Portal - Dashboard
  */
 (function () {
   document.addEventListener('empathAuthReady', init);
@@ -88,7 +88,7 @@
     container.innerHTML = analyses.map(function (a) {
       return '<div class="app-card">' +
         '<div class="app-card__header">' +
-          '<span class="app-card__title">' + esc(a.companyName) + ' — ' + esc(a.roleTitle) + '</span>' +
+          '<span class="app-card__title">' + esc(a.companyName) + ' - ' + esc(a.roleTitle) + '</span>' +
           (a.overallFit ? '<span class="badge badge--' + esc(a.overallFit) + '">' + esc(a.overallFit) + ' fit</span>' : '') +
         '</div>' +
         '<div class="app-card__body">' +
@@ -109,4 +109,46 @@
     if (!str) return '';
     return str.length > max ? str.substring(0, max) + '...' : str;
   }
+
+  // ------------------------------------------------------------------
+  // Change password
+  // ------------------------------------------------------------------
+  document.getElementById('changePasswordForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var newPw = document.getElementById('newPassword').value;
+    var confirmPw = document.getElementById('confirmPassword').value;
+    var btn = document.getElementById('changePasswordBtn');
+    var msg = document.getElementById('passwordMessage');
+
+    if (newPw !== confirmPw) {
+      msg.hidden = false;
+      msg.style.color = '#C0392B';
+      msg.textContent = 'Passwords do not match.';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Updating...';
+
+    window.empathAuth.user.updatePassword(newPw)
+      .then(function () {
+        msg.hidden = false;
+        msg.style.color = '#2E7D32';
+        msg.textContent = 'Password updated successfully.';
+        document.getElementById('changePasswordForm').reset();
+      })
+      .catch(function (err) {
+        msg.hidden = false;
+        msg.style.color = '#C0392B';
+        if (err.code === 'auth/requires-recent-login') {
+          msg.textContent = 'For security, please sign out and sign back in before changing your password.';
+        } else {
+          msg.textContent = err.message;
+        }
+      })
+      .finally(function () {
+        btn.disabled = false;
+        btn.textContent = 'Update Password';
+      });
+  });
 })();

@@ -1,0 +1,365 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --accent:        #c96a2e;
+  --accent-light:  #fdf3ec;
+  --teal:          #1e4d5c;
+  --bg:            #f0ece4;
+  --surface:       #ffffff;
+  --border:        #e8e0d5;
+  --text:          #1a1a1a;
+  --text-muted:    #777;
+  --sidebar-width: 200px;
+  --radius:        6px;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.875rem;
+  color: var(--text);
+  background: var(--bg);
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* ── App shell ──────────────────────────────────────────────────────────── */
+
+.app {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ── Sidebar ────────────────────────────────────────────────────────────── */
+
+.sidebar {
+  width: var(--sidebar-width);
+  flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 2rem;
+}
+
+.sidebar__logo {
+  padding: 1.25rem 1rem 1rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar__logo-mark {
+  color: var(--accent);
+  margin-right: 0.2rem;
+  font-size: 0.7rem;
+}
+
+.sidebar__section {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar__section--tools,
+.sidebar__section--colors,
+.sidebar__section--actions {
+  display: none;
+}
+
+.sidebar__section--tools.visible,
+.sidebar__section--colors.visible,
+.sidebar__section--actions.visible {
+  display: block;
+}
+
+#pageSection {
+  display: none;
+}
+
+#pageSection.visible {
+  display: block;
+}
+
+.sidebar__label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 0.625rem;
+}
+
+/* ── Buttons ────────────────────────────────────────────────────────────── */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  text-decoration: none;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+.btn--accent {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.btn--accent:hover {
+  background: #b05a24;
+  border-color: #b05a24;
+}
+
+.btn--upload {
+  display: block;
+  width: 100%;
+  text-align: center;
+  background: var(--teal);
+  color: #fff;
+  border-radius: var(--radius);
+  padding: 0.5rem 0.75rem;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn--upload:hover {
+  background: #163c4b;
+}
+
+/* ── Tool buttons ───────────────────────────────────────────────────────── */
+
+.tool-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.45rem 0.6rem;
+  margin-bottom: 0.25rem;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  font-family: inherit;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s, color 0.12s;
+}
+
+.tool-btn:last-child {
+  margin-bottom: 0;
+}
+
+.tool-btn svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.tool-btn:hover {
+  background: var(--accent-light);
+  color: var(--accent);
+  border-color: transparent;
+}
+
+.tool-btn.active {
+  background: var(--accent-light);
+  color: var(--accent);
+  border-color: var(--accent);
+  font-weight: 600;
+}
+
+.tool-btn--delete:hover,
+.tool-btn--delete.active {
+  background: #fff0f0;
+  color: #c0392b;
+  border-color: #c0392b;
+}
+
+.tool-btn--export {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  font-weight: 600;
+  justify-content: center;
+}
+
+.tool-btn--export:hover {
+  background: #b05a24;
+  border-color: #b05a24;
+  color: #fff;
+}
+
+.tool-btn--export.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* ── Color swatches ─────────────────────────────────────────────────────── */
+
+.color-swatches {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.color-swatch {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.1s, border-color 0.1s;
+  flex-shrink: 0;
+}
+
+.color-swatch:hover {
+  transform: scale(1.15);
+}
+
+.color-swatch.active {
+  border-color: var(--text);
+  transform: scale(1.1);
+}
+
+/* ── Doc info ───────────────────────────────────────────────────────────── */
+
+.doc-info {
+  font-size: 0.775rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+/* ── Main / drop zone ───────────────────────────────────────────────────── */
+
+.main {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: auto;
+  background: var(--bg);
+}
+
+.drop-zone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 100vh;
+}
+
+.drop-zone__inner {
+  text-align: center;
+  max-width: 320px;
+}
+
+.drop-zone__icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.drop-zone__heading {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+
+.drop-zone__sub {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+/* ── Pages container ────────────────────────────────────────────────────── */
+
+.pages-container {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  gap: 2rem;
+}
+
+/* ── Individual page ────────────────────────────────────────────────────── */
+
+.page-wrapper {
+  background: var(--surface);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.12);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.page-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  padding: 0.35rem 0.75rem;
+  background: #f9f7f4;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Canvas stack: PDF canvas underneath, Fabric canvas on top */
+.canvas-stack {
+  position: relative;
+}
+
+.pdf-canvas {
+  display: block;
+}
+
+.fabric-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Fabric.js creates its own wrapper div - keep it flush */
+.fabric-wrap .canvas-container {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+}
+
+/* ── Toast ──────────────────────────────────────────────────────────────── */
+
+.toast {
+  position: fixed;
+  bottom: 1.5rem;
+  left: calc(var(--sidebar-width) + 1.5rem);
+  background: var(--text);
+  color: #fff;
+  font-size: 0.8125rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  z-index: 100;
+}
+
+.toast--visible {
+  opacity: 1;
+}
+
+.toast--error {
+  background: #c0392b;
+}

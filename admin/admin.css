@@ -221,6 +221,10 @@
   padding: var(--space-lg);
 }
 
+.modal-overlay[hidden] {
+  display: none;
+}
+
 .modal {
   background: var(--color-surface);
   border-radius: var(--radius-lg);

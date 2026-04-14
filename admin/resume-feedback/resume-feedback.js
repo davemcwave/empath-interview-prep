@@ -1,5 +1,5 @@
 /**
- * Admin — Resume Feedback (Upload + Manage)
+ * Admin - Resume Feedback (Upload + Manage)
  */
 (function () {
   var uid = new URLSearchParams(window.location.search).get('uid');

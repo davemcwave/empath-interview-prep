@@ -7,7 +7,10 @@
       "WebFetch(domain:www.wonsulting.com)",
       "WebFetch(domain:www.interviewkickstart.com)",
       "WebSearch",
-      "WebFetch(domain:www.runwellclinic.com)"
+      "WebFetch(domain:www.runwellclinic.com)",
+      "Bash(ls -la .gitignore)",
+      "Bash(find . -maxdepth 2 -type f \\\\\\( -name \"Makefile\" -o -name \"gulpfile.*\" -o -name \"webpack.*\" -o -name \"vite.*\" -o -name \".env*\" \\\\\\))",
+      "Bash(grep -E \"\\\\.\\(html|css|js|json|md|txt\\)$\")"
     ]
   }
 }

@@ -71,19 +71,19 @@
       <!-- Stats -->
       <div class="stat-grid" id="statsGrid">
         <div class="stat-card">
-          <div class="stat-card__value" id="statSessions">—</div>
+          <div class="stat-card__value" id="statSessions">-</div>
           <div class="stat-card__label">Sessions</div>
         </div>
         <div class="stat-card">
-          <div class="stat-card__value" id="statAnalyses">—</div>
+          <div class="stat-card__value" id="statAnalyses">-</div>
           <div class="stat-card__label">Job Analyses</div>
         </div>
         <div class="stat-card">
-          <div class="stat-card__value" id="statReviews">—</div>
+          <div class="stat-card__value" id="statReviews">-</div>
           <div class="stat-card__label">Resume Reviews</div>
         </div>
         <div class="stat-card">
-          <div class="stat-card__value" id="statPipeline">—</div>
+          <div class="stat-card__value" id="statPipeline">-</div>
           <div class="stat-card__label">In Pipeline</div>
         </div>
       </div>
@@ -102,6 +102,26 @@
         <div class="empty-state">
           <p class="empty-state__text">Job posting analyses will appear here once David reviews your target roles.</p>
         </div>
+      </div>
+
+      <!-- Account settings -->
+      <h2 style="font-family:var(--font-heading); font-size:1.25rem; margin:var(--space-2xl) 0 var(--space-lg);">Account</h2>
+      <div class="app-card" id="accountCard">
+        <div class="app-card__header">
+          <span class="app-card__title">Change Password</span>
+        </div>
+        <form id="changePasswordForm">
+          <div class="form-group">
+            <label class="form-label" for="newPassword">New Password <span class="form-required">*</span></label>
+            <input class="form-input" type="password" id="newPassword" required minlength="6" placeholder="At least 6 characters" autocomplete="new-password" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="confirmPassword">Confirm Password <span class="form-required">*</span></label>
+            <input class="form-input" type="password" id="confirmPassword" required minlength="6" placeholder="Re-enter your new password" autocomplete="new-password" />
+          </div>
+          <button type="submit" class="btn btn--accent" id="changePasswordBtn" style="margin-top:var(--space-md);">Update Password</button>
+        </form>
+        <div id="passwordMessage" hidden style="margin-top:var(--space-md);"></div>
       </div>
     </main>
   </div>

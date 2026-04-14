@@ -1,5 +1,5 @@
 /**
- * Admin — Session Notes CRUD
+ * Admin - Session Notes CRUD
  */
 (function () {
   var uid = new URLSearchParams(window.location.search).get('uid');
@@ -70,7 +70,7 @@
     emptyState.hidden = true;
 
     sessionList.innerHTML = sessions.map(function (s) {
-      var date = s.date ? formatDate(s.date) : '—';
+      var date = s.date ? formatDate(s.date) : '-';
       var typeLabel = formatType(s.type);
       var actionHtml = '';
       if (s.actionItems && s.actionItems.length > 0) {
@@ -233,7 +233,7 @@
   // Helpers
   // ------------------------------------------------------------------
   function formatDate(ts) {
-    if (!ts || !ts.toDate) return '—';
+    if (!ts || !ts.toDate) return '-';
     return ts.toDate().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   }
 
@@ -256,7 +256,7 @@
       'resume-review': 'Resume Review',
       'other': 'Other'
     };
-    return map[type] || type || '—';
+    return map[type] || type || '-';
   }
 
   function esc(str) {

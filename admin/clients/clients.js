@@ -1,5 +1,5 @@
 /**
- * Admin — Client Detail Page
+ * Admin - Client Detail Page
  */
 (function () {
   var uid = new URLSearchParams(window.location.search).get('uid');
@@ -48,10 +48,10 @@
   }
 
   function renderProfile() {
-    var startDate = clientData.startDate ? formatDate(clientData.startDate) : '—';
+    var startDate = clientData.startDate ? formatDate(clientData.startDate) : '-';
     profileView.innerHTML =
       '<p><strong>Status:</strong> <span class="badge badge--' + esc(clientData.status || 'active') + '">' + esc(clientData.status || 'active') + '</span></p>' +
-      '<p style="margin-top:var(--space-sm)"><strong>Plan:</strong> ' + esc(clientData.plan || '—') + '</p>' +
+      '<p style="margin-top:var(--space-sm)"><strong>Plan:</strong> ' + esc(clientData.plan || '-') + '</p>' +
       '<p style="margin-top:var(--space-sm)"><strong>Start Date:</strong> ' + startDate + '</p>' +
       (clientData.notes ? '<p style="margin-top:var(--space-sm)"><strong>Notes:</strong> ' + esc(clientData.notes) + '</p>' : '');
   }
@@ -147,7 +147,7 @@
   // Helpers
   // ------------------------------------------------------------------
   function formatDate(ts) {
-    if (!ts || !ts.toDate) return '—';
+    if (!ts || !ts.toDate) return '-';
     return ts.toDate().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   }
 

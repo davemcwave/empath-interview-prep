@@ -49,7 +49,7 @@
 
       <div class="app-toolbar">
         <input type="text" class="form-input app-toolbar__search" id="searchInput" placeholder="Search clients..." />
-        <button class="btn btn--accent" id="inviteBtn">Invite Client</button>
+        <button class="btn btn--accent" id="inviteBtn">Add Client</button>
       </div>
 
       <!-- Client list -->
@@ -74,7 +74,7 @@
       <div class="empty-state" id="emptyState" hidden>
         <h2 class="empty-state__heading">No clients yet.</h2>
         <p class="empty-state__text">Invite your first client to get started.</p>
-        <button class="btn btn--accent" id="emptyInviteBtn">Invite Client</button>
+        <button class="btn btn--accent" id="emptyInviteBtn">Add Client</button>
       </div>
     </main>
   </div>
@@ -96,9 +96,18 @@
           <label class="form-label" for="invitePlan">Plan <span class="form-optional">(optional)</span></label>
           <input class="form-input" type="text" id="invitePlan" placeholder="e.g. Monthly Coaching" />
         </div>
+        <div class="form-group">
+          <label class="form-label" for="invitePassword">Set a Password <span class="form-optional">(optional)</span></label>
+          <input class="form-input" type="text" id="invitePassword" placeholder="Leave blank to let them use Google or email link" />
+          <p class="form-file-hint">If set, share this with your client so they can sign in with email + password.</p>
+        </div>
+        <div class="form-group" style="display:flex; align-items:center; gap:var(--space-sm);">
+          <input type="checkbox" id="sendEmail" />
+          <label class="form-label" for="sendEmail" style="margin:0;">Also send a sign-in link email</label>
+        </div>
         <div class="modal__actions">
           <button type="button" class="btn btn--outline" id="cancelInvite">Cancel</button>
-          <button type="submit" class="btn btn--accent" id="sendInviteBtn">Send Invite</button>
+          <button type="submit" class="btn btn--accent" id="sendInviteBtn">Add Client</button>
         </div>
       </form>
     </div>

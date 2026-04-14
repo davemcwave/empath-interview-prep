@@ -268,7 +268,8 @@ h1, h2, h3, h4 {
 .nav__links {
   display: flex;
   align-items: center;
-  gap: var(--space-xl);
+  gap: var(--space-lg);
+  flex-wrap: nowrap;
 }
 
 .nav__link {
@@ -301,9 +302,14 @@ h1, h2, h3, h4 {
 }
 
 .nav__cta {
-  margin-left: var(--space-sm);
+  margin-left: 0;
   padding: 0.625rem 1.25rem;
   font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+.nav__cta + .nav__cta {
+  margin-left: calc(-1 * var(--space-sm));
 }
 
 .nav__hamburger {
@@ -1440,6 +1446,10 @@ h1, h2, h3, h4 {
   gap: var(--space-xl);
 }
 
+.review-form[hidden] {
+  display: none;
+}
+
 .form-row--two {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1527,6 +1537,7 @@ h1, h2, h3, h4 {
 
 .form-submit {
   align-self: flex-start;
+  margin-top: var(--space-md);
 }
 
 @media (max-width: 600px) {

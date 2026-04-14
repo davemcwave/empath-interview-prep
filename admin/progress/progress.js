@@ -1,5 +1,5 @@
 /**
- * Admin — Progress & Pipeline Management
+ * Admin - Progress & Pipeline Management
  */
 (function () {
   var uid = new URLSearchParams(window.location.search).get('uid');

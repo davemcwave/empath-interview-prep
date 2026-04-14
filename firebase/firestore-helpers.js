@@ -85,11 +85,14 @@ Empath.db = {
   async getClients() {
     var snap = await db.collection('users')
       .where('role', '==', 'client')
-      .orderBy('displayName')
       .get();
-    return snap.docs.map(function (doc) {
+    var clients = snap.docs.map(function (doc) {
       return { id: doc.id, ...doc.data() };
     });
+    clients.sort(function (a, b) {
+      return (a.displayName || '').localeCompare(b.displayName || '');
+    });
+    return clients;
   },
 
   /** Firestore timestamp helper */

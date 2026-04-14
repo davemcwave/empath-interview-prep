@@ -5,6 +5,9 @@
  * and redirects unauthenticated users to /login/.
  * For admin pages, also verifies the user has role "admin".
  *
+ * IMPORTANT: Only users with a pendingInvite or existing user doc
+ * are allowed in. Anyone else is signed out and rejected.
+ *
  * Exposes window.empathAuth = { user, userDoc, isAdmin }
  * and dispatches a 'empathAuthReady' event on document when ready.
  */
@@ -31,7 +34,14 @@
           .limit(1)
           .get();
 
-        const inviteData = inviteQuery.empty ? {} : inviteQuery.docs[0].data();
+        // No invite = not authorized. Sign them out.
+        if (inviteQuery.empty) {
+          await auth.signOut();
+          window.location.replace('/login/?error=not-authorized');
+          return;
+        }
+
+        const inviteData = inviteQuery.docs[0].data();
 
         await userDocRef.set({
           email: user.email,
@@ -44,12 +54,9 @@
           createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        // Delete the invite if it existed
-        if (!inviteQuery.empty) {
-          await inviteQuery.docs[0].ref.delete();
-        }
+        // Delete the invite
+        await inviteQuery.docs[0].ref.delete();
 
-        // Re-fetch the doc we just created
         const freshSnap = await userDocRef.get();
         setupAuth(user, freshSnap.data());
       } else {

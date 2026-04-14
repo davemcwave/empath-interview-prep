@@ -3,11 +3,64 @@
 ============================================================ */
 
 /* Hide form/messages during transitions */
-#loginForm,
+#loginOptions,
+#magicLinkForm,
 #linkSent,
 #signingIn,
 #loginError {
   transition: opacity var(--transition-base);
+}
+
+/* ---- Google sign-in button ---- */
+.btn--google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 2px solid var(--color-border);
+}
+
+.btn--google:hover {
+  border-color: var(--color-text-muted);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+/* ---- Divider ---- */
+.login-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin: var(--space-xl) 0;
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+}
+
+.login-divider::before,
+.login-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+}
+
+/* ---- Alt link ---- */
+.login-alt-link {
+  text-align: center;
+  margin-top: var(--space-lg);
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
 }
 
 /* ---- Success / info messages ---- */

@@ -1,5 +1,5 @@
 /**
- * Admin — Job Posting Analysis CRUD
+ * Admin - Job Posting Analysis CRUD
  */
 (function () {
   var uid = new URLSearchParams(window.location.search).get('uid');
@@ -66,18 +66,18 @@
       var themesHtml = (a.themes || []).map(function (t) {
         return '<li><strong>' + esc(t.name) + '</strong>' +
           (t.frequency ? ' <span style="color:var(--color-text-muted);">(' + esc(t.frequency) + ')</span>' : '') +
-          (t.details ? ' — ' + esc(t.details) : '') + '</li>';
+          (t.details ? ' - ' + esc(t.details) : '') + '</li>';
       }).join('');
 
       var gapsHtml = (a.gaps || []).map(function (g) {
         return '<li><span class="badge badge--' + esc(g.severity) + '">' + esc(g.severity) + '</span> ' +
           '<strong>' + esc(g.area) + '</strong>' +
-          (g.recommendation ? ' — ' + esc(g.recommendation) : '') + '</li>';
+          (g.recommendation ? ' - ' + esc(g.recommendation) : '') + '</li>';
       }).join('');
 
       return '<div class="app-card" data-id="' + a.id + '">' +
         '<div class="app-card__header">' +
-          '<span class="app-card__title">' + esc(a.companyName) + ' — ' + esc(a.roleTitle) + '</span>' +
+          '<span class="app-card__title">' + esc(a.companyName) + ' - ' + esc(a.roleTitle) + '</span>' +
           (a.overallFit ? '<span class="badge badge--' + esc(a.overallFit) + '">' + esc(a.overallFit) + ' fit</span>' : '') +
         '</div>' +
         '<div class="app-card__body">' +

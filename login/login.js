@@ -1,23 +1,11 @@
 /**
- * Login Page — Magic Link Flow
- *
- * Handles:
- * 1. Sending the magic link email
- * 2. Completing sign-in when user returns from the link
- * 3. Redirecting to /portal/ or /admin/ based on role
+ * Login Page
+ * Default: email → send magic link
+ * Alt: "I have a password" → email + password form
+ * Alt: Google sign-in button
  */
 (function () {
-  var form = document.getElementById('loginForm');
-  var emailInput = document.getElementById('email');
-  var sendBtn = document.getElementById('sendBtn');
-  var linkSentEl = document.getElementById('linkSent');
-  var sentEmailEl = document.getElementById('sentEmail');
-  var signingInEl = document.getElementById('signingIn');
-  var loginErrorEl = document.getElementById('loginError');
-  var errorTextEl = document.getElementById('errorText');
-  var retryBtn = document.getElementById('retryBtn');
-  var errorRetryBtn = document.getElementById('errorRetryBtn');
-
+  var VIEWS = ['viewEmail', 'viewPassword', 'viewLinkSent', 'viewSigningIn', 'viewError'];
   var STORAGE_KEY = 'empathSignInEmail';
 
   var actionCodeSettings = {
@@ -25,82 +13,106 @@
     handleCodeInApp: true
   };
 
-  // ------------------------------------------------------------------
-  // Check if user is already signed in
-  // ------------------------------------------------------------------
+  // Check if redirected here after being rejected
+  if (window.location.search.includes('error=not-authorized')) {
+    showError('Your account hasn\'t been set up yet. Please contact empathinterviews@gmail.com to get access.');
+    window.history.replaceState(null, '', '/login/');
+  }
+
+  // Already signed in? Redirect.
   auth.onAuthStateChanged(function (user) {
     if (user && !firebase.auth().isSignInWithEmailLink(window.location.href)) {
       redirectUser(user);
     }
   });
 
-  // ------------------------------------------------------------------
-  // Check if we're returning from a magic link
-  // ------------------------------------------------------------------
+  // Returning from a magic link?
   if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
-    completeSignIn();
+    showView('viewSigningIn');
+    var email = localStorage.getItem(STORAGE_KEY);
+    if (!email) {
+      email = prompt('Please enter your email to confirm sign-in:');
+      if (!email) { showError('Sign-in cancelled.'); return; }
+    }
+    auth.signInWithEmailLink(email, window.location.href)
+      .then(function (result) {
+        localStorage.removeItem(STORAGE_KEY);
+        window.history.replaceState(null, '', '/login/');
+        redirectUser(result.user);
+      })
+      .catch(function (err) { showError(friendlyError(err)); });
   }
 
   // ------------------------------------------------------------------
   // Send magic link
   // ------------------------------------------------------------------
-  form.addEventListener('submit', function (e) {
+  document.getElementById('emailForm').addEventListener('submit', function (e) {
     e.preventDefault();
-    var email = emailInput.value.trim();
-    if (!email) return;
+    var email = document.getElementById('email').value.trim();
+    var btn = document.getElementById('sendLinkBtn');
 
-    sendBtn.disabled = true;
-    sendBtn.textContent = 'Sending...';
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
 
     auth.sendSignInLinkToEmail(email, actionCodeSettings)
       .then(function () {
         localStorage.setItem(STORAGE_KEY, email);
-        showStep('linkSent');
-        sentEmailEl.textContent = email;
+        showView('viewLinkSent');
+        document.getElementById('sentEmail').textContent = email;
       })
+      .catch(function (err) { showError(friendlyError(err)); })
+      .finally(function () { btn.disabled = false; btn.textContent = 'Send Sign-In Link'; });
+  });
+
+  // ------------------------------------------------------------------
+  // Email + password
+  // ------------------------------------------------------------------
+  document.getElementById('passwordForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var email = document.getElementById('pwEmail').value.trim();
+    var password = document.getElementById('password').value;
+    var btn = document.getElementById('passwordBtn');
+
+    btn.disabled = true;
+    btn.textContent = 'Signing in...';
+
+    auth.signInWithEmailAndPassword(email, password)
+      .then(function (result) { redirectUser(result.user); })
+      .catch(function (err) { showError(friendlyError(err)); })
+      .finally(function () { btn.disabled = false; btn.textContent = 'Sign In'; });
+  });
+
+  // ------------------------------------------------------------------
+  // Google
+  // ------------------------------------------------------------------
+  document.getElementById('googleBtn').addEventListener('click', function () {
+    auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
+      .then(function (result) { redirectUser(result.user); })
       .catch(function (err) {
-        console.error('Send link error:', err);
-        showError(friendlyError(err));
-      })
-      .finally(function () {
-        sendBtn.disabled = false;
-        sendBtn.textContent = 'Send Sign-In Link';
+        if (err.code !== 'auth/popup-closed-by-user') showError(friendlyError(err));
       });
   });
 
   // ------------------------------------------------------------------
-  // Complete sign-in from magic link
+  // View switching
   // ------------------------------------------------------------------
-  function completeSignIn() {
-    showStep('signingIn');
+  document.getElementById('showPasswordBtn').addEventListener('click', function () { showView('viewPassword'); });
+  document.getElementById('backToEmail').addEventListener('click', function () { showView('viewEmail'); });
+  document.getElementById('retryBtn').addEventListener('click', function () { showView('viewEmail'); });
+  document.getElementById('errorRetryBtn').addEventListener('click', function () { showView('viewEmail'); });
 
-    var email = localStorage.getItem(STORAGE_KEY);
-
-    if (!email) {
-      // User opened the link on a different device/browser
-      email = prompt('Please enter your email to confirm sign-in:');
-      if (!email) {
-        showError('Sign-in cancelled. Please try again.');
-        return;
-      }
-    }
-
-    auth.signInWithEmailLink(email, window.location.href)
-      .then(function (result) {
-        localStorage.removeItem(STORAGE_KEY);
-        // Clean the URL (remove magic link params)
-        window.history.replaceState(null, '', '/login/');
-        redirectUser(result.user);
-      })
-      .catch(function (err) {
-        console.error('Sign-in error:', err);
-        showError(friendlyError(err));
-      });
+  // ------------------------------------------------------------------
+  // Helpers
+  // ------------------------------------------------------------------
+  function showView(id) {
+    VIEWS.forEach(function (v) { document.getElementById(v).hidden = (v !== id); });
   }
 
-  // ------------------------------------------------------------------
-  // Redirect based on role
-  // ------------------------------------------------------------------
+  function showError(msg) {
+    document.getElementById('errorText').textContent = msg;
+    showView('viewError');
+  }
+
   function redirectUser(user) {
     db.collection('users').doc(user.uid).get()
       .then(function (snap) {
@@ -110,59 +122,18 @@
           window.location.replace('/portal/');
         }
       })
-      .catch(function () {
-        // If we can't read the doc yet (first-time user), auth-guard handles it
-        window.location.replace('/portal/');
-      });
-  }
-
-  // ------------------------------------------------------------------
-  // UI helpers
-  // ------------------------------------------------------------------
-  function showStep(stepId) {
-    form.hidden = true;
-    linkSentEl.hidden = true;
-    signingInEl.hidden = true;
-    loginErrorEl.hidden = true;
-    document.getElementById(stepId).hidden = false;
-  }
-
-  function showError(message) {
-    errorTextEl.textContent = message;
-    showStep('loginError');
-  }
-
-  function resetToForm() {
-    showStep(null); // hide all
-    form.hidden = false;
-    linkSentEl.hidden = true;
-    signingInEl.hidden = true;
-    loginErrorEl.hidden = true;
+      .catch(function () { window.location.replace('/portal/'); });
   }
 
   function friendlyError(err) {
     switch (err.code) {
-      case 'auth/invalid-action-code':
-        return 'This sign-in link has expired or was already used. Please request a new one.';
-      case 'auth/invalid-email':
-        return 'Please enter a valid email address.';
-      case 'auth/too-many-requests':
-        return 'Too many attempts. Please wait a few minutes and try again.';
-      default:
-        return err.message || 'An unexpected error occurred. Please try again.';
+      case 'auth/invalid-action-code': return 'This sign-in link has expired or was already used.';
+      case 'auth/invalid-email': return 'Please enter a valid email address.';
+      case 'auth/wrong-password': return 'Incorrect password. Please try again.';
+      case 'auth/user-not-found': return 'No account found with this email. Contact empathinterviews@gmail.com to get set up.';
+      case 'auth/invalid-credential': return 'Incorrect email or password. Please try again.';
+      case 'auth/too-many-requests': return 'Too many attempts. Please wait a few minutes.';
+      default: return err.message || 'An unexpected error occurred.';
     }
-  }
-
-  // Retry buttons
-  retryBtn.addEventListener('click', resetToForm);
-  errorRetryBtn.addEventListener('click', resetToForm);
-
-  // Show form by default (unless completeSignIn already switched the view)
-  function showStep(id) {
-    form.hidden = true;
-    linkSentEl.hidden = true;
-    signingInEl.hidden = true;
-    loginErrorEl.hidden = true;
-    if (id) document.getElementById(id).hidden = false;
   }
 })();
