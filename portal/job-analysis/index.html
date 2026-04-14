@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Job Analysis - Empath Portal</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="../../empath-icon.png" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="stylesheet" href="../portal.css" />
+</head>
+<body>
+
+  <nav class="nav" id="nav" role="navigation" aria-label="Portal navigation">
+    <div class="nav__inner container">
+      <a href="/portal/" class="nav__logo" aria-label="Client portal home">
+        <img src="../../empath-icon.png" alt="" class="nav__logo-icon" aria-hidden="true" />
+        Empath Portal
+      </a>
+      <div class="nav__links" id="navLinks" role="menubar">
+        <a href="/portal/" class="nav__link" role="menuitem">Dashboard</a>
+        <a href="/portal/sessions/" class="nav__link" role="menuitem">Sessions</a>
+        <a href="/portal/job-analysis/" class="nav__link" role="menuitem">Job Analysis</a>
+        <a href="/portal/resume-feedback/" class="nav__link" role="menuitem">Resume</a>
+        <a href="/portal/progress/" class="nav__link" role="menuitem">Progress</a>
+        <button class="btn btn--outline nav__cta" id="signOutBtn">Sign Out</button>
+      </div>
+      <button class="nav__hamburger" id="hamburger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="navLinks">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="app-sidebar__section">
+        <div class="app-sidebar__label">Portal</div>
+        <a href="/portal/" class="app-sidebar__link">Dashboard</a>
+        <a href="/portal/sessions/" class="app-sidebar__link">Sessions</a>
+        <a href="/portal/job-analysis/" class="app-sidebar__link is-active">Job Analysis</a>
+        <a href="/portal/resume-feedback/" class="app-sidebar__link">Resume Feedback</a>
+        <a href="/portal/progress/" class="app-sidebar__link">Progress</a>
+      </div>
+    </aside>
+
+    <main class="app-content">
+      <div class="app-page-header">
+        <h1 class="app-page-header__title">Job Posting Analysis</h1>
+        <p class="app-page-header__subtitle">Theme breakdowns and gap analyses for your target roles.</p>
+      </div>
+
+      <div id="analysisList"></div>
+
+      <div class="empty-state" id="emptyState" hidden>
+        <h2 class="empty-state__heading">No analyses yet.</h2>
+        <p class="empty-state__text">Job posting analyses will appear here once David reviews your target roles.</p>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="../../firebase/firebase-config.js"></script>
+  <script src="../../firebase/auth-guard.js"></script>
+  <script src="../../firebase/firestore-helpers.js"></script>
+  <script>
+  (function () {
+    document.addEventListener('empathAuthReady', async function () {
+      var uid = window.empathAuth.user.uid;
+
+      document.getElementById('signOutBtn').addEventListener('click', function () {
+        auth.signOut().then(function () { window.location.replace('/login/'); });
+      });
+
+      var hamburger = document.getElementById('hamburger');
+      var navLinks = document.getElementById('navLinks');
+      if (hamburger) {
+        hamburger.addEventListener('click', function () {
+          var open = navLinks.classList.toggle('is-open');
+          hamburger.setAttribute('aria-expanded', open);
+        });
+      }
+
+      try {
+        var items = await Empath.db.getCollection('users/' + uid + '/jobAnalyses', 'createdAt', 'desc');
+        if (items.length === 0) {
+          document.getElementById('emptyState').hidden = false;
+          return;
+        }
+
+        document.getElementById('analysisList').innerHTML = items.map(function (a) {
+          var themesHtml = (a.themes || []).map(function (t) {
+            return '<li class="theme-item"><span class="theme-item__name">' + esc(t.name) + '</span>' +
+              (t.frequency ? '<span class="theme-item__freq">' + esc(t.frequency) + '</span>' : '') +
+              (t.details ? '<br><span style="color:var(--color-text-muted);font-size:0.9375rem;">' + esc(t.details) + '</span>' : '') +
+              '</li>';
+          }).join('');
+
+          var gapsHtml = (a.gaps || []).map(function (g) {
+            return '<div class="gap-item">' +
+              '<span class="gap-item__area"><span class="badge badge--' + esc(g.severity) + '">' + esc(g.severity) + '</span> ' + esc(g.area) + '</span>' +
+              '<span class="gap-item__rec">' + esc(g.recommendation) + '</span>' +
+              '</div>';
+          }).join('');
+
+          return '<div class="app-card">' +
+            '<div class="app-card__header">' +
+              '<span class="app-card__title">' + esc(a.companyName) + ' — ' + esc(a.roleTitle) + '</span>' +
+              (a.overallFit ? '<span class="badge badge--' + esc(a.overallFit) + '">' + esc(a.overallFit) + ' fit</span>' : '') +
+            '</div>' +
+            '<div class="app-card__body">' +
+              (a.postingUrl ? '<p style="margin-bottom:var(--space-md);"><a href="' + esc(a.postingUrl) + '" target="_blank" rel="noopener" style="color:var(--color-accent);">View Original Posting</a></p>' : '') +
+              (themesHtml ? '<h3 style="font-size:1rem; margin-bottom:var(--space-sm);">Themes</h3><ul class="theme-list">' + themesHtml + '</ul>' : '') +
+              (gapsHtml ? '<h3 style="font-size:1rem; margin:var(--space-lg) 0 var(--space-sm);">Gaps</h3><div class="gap-list">' + gapsHtml + '</div>' : '') +
+              (a.notes ? '<h3 style="font-size:1rem; margin:var(--space-lg) 0 var(--space-sm);">Notes</h3><p style="white-space:pre-wrap;">' + esc(a.notes) + '</p>' : '') +
+            '</div></div>';
+        }).join('');
+      } catch (err) {
+        console.error('Load error:', err);
+      }
+
+      function esc(str) { var el = document.createElement('span'); el.textContent = str || ''; return el.innerHTML; }
+    });
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In - Empath Interview Prep</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="../empath-icon.png" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="login.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav__inner container">
+      <a href="../" class="nav__logo" aria-label="Empath Interview Prep home">
+        <img src="../empath-icon.png" alt="" class="nav__logo-icon" aria-hidden="true" />
+        Empath Interview Prep
+      </a>
+    </div>
+  </nav>
+
+  <main>
+    <section class="review-form-section">
+      <div class="container review-form-container">
+
+        <div class="review-form-header">
+          <div class="section-label">Client Portal</div>
+          <h1 class="review-form-heading">Sign in to your portal.</h1>
+          <p class="review-form-subtext">Enter your email and we'll send you a secure sign-in link. No password needed.</p>
+        </div>
+
+        <!-- Step 1: Email input -->
+        <form class="review-form" id="loginForm">
+          <div class="form-group">
+            <label class="form-label" for="email">Email Address <span class="form-required">*</span></label>
+            <input class="form-input" type="email" id="email" name="email" required placeholder="jane@example.com" autocomplete="email" />
+          </div>
+
+          <button type="submit" class="btn btn--accent btn--lg form-submit" id="sendBtn">
+            Send Sign-In Link
+          </button>
+        </form>
+
+        <!-- Step 2: Link sent confirmation -->
+        <div class="login-message" id="linkSent" hidden>
+          <div class="login-message__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="48" height="48">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+          </div>
+          <h2 class="login-message__heading">Check your email.</h2>
+          <p class="login-message__text">We sent a sign-in link to <strong id="sentEmail"></strong>. Click the link in the email to access your portal.</p>
+          <p class="login-message__hint">Didn't get it? Check your spam folder, or <button class="login-retry-btn" id="retryBtn">try again</button>.</p>
+        </div>
+
+        <!-- Step 3: Completing sign-in (shown when returning from magic link) -->
+        <div class="login-message" id="signingIn" hidden>
+          <div class="login-spinner" aria-hidden="true"></div>
+          <h2 class="login-message__heading">Signing you in...</h2>
+          <p class="login-message__text">Hold tight, this will only take a moment.</p>
+        </div>
+
+        <!-- Error state -->
+        <div class="login-message login-message--error" id="loginError" hidden>
+          <h2 class="login-message__heading">Something went wrong.</h2>
+          <p class="login-message__text" id="errorText"></p>
+          <button class="btn btn--outline" id="errorRetryBtn">Try Again</button>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Simplified footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer__bottom">
+      <div class="container">
+        <p class="footer__copy">&copy; 2025 Empath Interview Prep. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="../firebase/firebase-config.js"></script>
+  <script src="login.js"></script>
+</body>
+</html>

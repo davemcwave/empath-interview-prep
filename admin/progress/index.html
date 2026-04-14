@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Progress - Empath Admin</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="../../empath-icon.png" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="stylesheet" href="../admin.css" />
+</head>
+<body>
+
+  <nav class="nav" id="nav" role="navigation" aria-label="Admin navigation">
+    <div class="nav__inner container">
+      <a href="/admin/" class="nav__logo" aria-label="Admin dashboard">
+        <img src="../../empath-icon.png" alt="" class="nav__logo-icon" aria-hidden="true" />
+        Empath Admin
+      </a>
+      <div class="nav__links" id="navLinks" role="menubar">
+        <a href="/admin/" class="nav__link" role="menuitem">Clients</a>
+        <button class="btn btn--outline nav__cta" id="signOutBtn">Sign Out</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="app-sidebar__section">
+        <div class="app-sidebar__label">Admin</div>
+        <a href="/admin/" class="app-sidebar__link">Clients</a>
+      </div>
+      <div class="app-sidebar__section">
+        <div class="app-sidebar__label" id="clientNameSidebar">Client</div>
+        <a href="#" class="app-sidebar__link" id="linkSessions">Sessions</a>
+        <a href="#" class="app-sidebar__link" id="linkJobAnalysis">Job Analysis</a>
+        <a href="#" class="app-sidebar__link" id="linkResume">Resume Feedback</a>
+        <a href="#" class="app-sidebar__link is-active" id="linkProgress">Progress</a>
+      </div>
+    </aside>
+
+    <main class="app-content">
+      <div class="app-page-header">
+        <h1 class="app-page-header__title">Progress & Pipeline</h1>
+        <p class="app-page-header__subtitle" id="clientSubtitle"></p>
+      </div>
+
+      <a href="#" class="btn btn--outline" id="backToClientBtn" style="margin-bottom:var(--space-xl); display:inline-flex;">Back to Client</a>
+
+      <!-- Stats -->
+      <div class="app-card" style="margin-bottom:var(--space-xl);">
+        <div class="app-card__header">
+          <span class="app-card__title">Job Search Stats</span>
+        </div>
+        <form id="statsForm">
+          <div class="stat-grid" style="margin-bottom:0;">
+            <div class="form-group" style="text-align:center;">
+              <label class="form-label" for="statApps">Applications</label>
+              <input class="form-input" type="number" id="statApps" min="0" value="0" style="text-align:center;" />
+            </div>
+            <div class="form-group" style="text-align:center;">
+              <label class="form-label" for="statPhoneScreens">Phone Screens</label>
+              <input class="form-input" type="number" id="statPhoneScreens" min="0" value="0" style="text-align:center;" />
+            </div>
+            <div class="form-group" style="text-align:center;">
+              <label class="form-label" for="statTechnical">Technical</label>
+              <input class="form-input" type="number" id="statTechnical" min="0" value="0" style="text-align:center;" />
+            </div>
+            <div class="form-group" style="text-align:center;">
+              <label class="form-label" for="statOnsite">Onsite</label>
+              <input class="form-input" type="number" id="statOnsite" min="0" value="0" style="text-align:center;" />
+            </div>
+            <div class="form-group" style="text-align:center;">
+              <label class="form-label" for="statOffers">Offers</label>
+              <input class="form-input" type="number" id="statOffers" min="0" value="0" style="text-align:center;" />
+            </div>
+          </div>
+          <button type="submit" class="btn btn--accent" style="margin-top:var(--space-lg);">Save Stats</button>
+        </form>
+      </div>
+
+      <!-- Pipeline -->
+      <div class="app-card" style="margin-bottom:var(--space-xl);">
+        <div class="app-card__header">
+          <span class="app-card__title">Pipeline</span>
+        </div>
+        <div id="pipelineContainer" class="dynamic-fields"></div>
+        <button type="button" class="add-field-btn" id="addPipelineBtn">+ Add Company</button>
+        <button class="btn btn--accent" id="savePipelineBtn" style="margin-top:var(--space-lg);">Save Pipeline</button>
+      </div>
+
+      <!-- Weekly goals -->
+      <div class="app-card">
+        <div class="app-card__header">
+          <span class="app-card__title">Weekly Goals</span>
+        </div>
+        <div id="goalsContainer" class="dynamic-fields"></div>
+        <button type="button" class="add-field-btn" id="addGoalBtn">+ Add Goal</button>
+        <button class="btn btn--accent" id="saveGoalsBtn" style="margin-top:var(--space-lg);">Save Goals</button>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="../../firebase/firebase-config.js"></script>
+  <script src="../../firebase/auth-guard.js"></script>
+  <script src="../../firebase/firestore-helpers.js"></script>
+  <script src="progress.js"></script>
+</body>
+</html>

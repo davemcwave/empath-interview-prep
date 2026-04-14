@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume Feedback - Empath Admin</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="../../empath-icon.png" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="stylesheet" href="../admin.css" />
+</head>
+<body>
+
+  <nav class="nav" id="nav" role="navigation" aria-label="Admin navigation">
+    <div class="nav__inner container">
+      <a href="/admin/" class="nav__logo" aria-label="Admin dashboard">
+        <img src="../../empath-icon.png" alt="" class="nav__logo-icon" aria-hidden="true" />
+        Empath Admin
+      </a>
+      <div class="nav__links" id="navLinks" role="menubar">
+        <a href="/admin/" class="nav__link" role="menuitem">Clients</a>
+        <button class="btn btn--outline nav__cta" id="signOutBtn">Sign Out</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="app-sidebar__section">
+        <div class="app-sidebar__label">Admin</div>
+        <a href="/admin/" class="app-sidebar__link">Clients</a>
+      </div>
+      <div class="app-sidebar__section">
+        <div class="app-sidebar__label" id="clientNameSidebar">Client</div>
+        <a href="#" class="app-sidebar__link" id="linkSessions">Sessions</a>
+        <a href="#" class="app-sidebar__link" id="linkJobAnalysis">Job Analysis</a>
+        <a href="#" class="app-sidebar__link is-active" id="linkResume">Resume Feedback</a>
+        <a href="#" class="app-sidebar__link" id="linkProgress">Progress</a>
+      </div>
+    </aside>
+
+    <main class="app-content">
+      <div class="app-page-header">
+        <h1 class="app-page-header__title">Resume Feedback</h1>
+        <p class="app-page-header__subtitle" id="clientSubtitle"></p>
+      </div>
+
+      <div class="app-toolbar">
+        <button class="btn btn--accent" id="addReviewBtn">Upload Review</button>
+        <a href="#" class="btn btn--outline" id="backToClientBtn">Back to Client</a>
+      </div>
+
+      <!-- Upload form -->
+      <div class="app-card" id="formCard" hidden>
+        <div class="app-card__header">
+          <span class="app-card__title" id="formTitle">Upload Resume Review</span>
+        </div>
+        <form id="reviewForm">
+          <input type="hidden" id="editingId" value="" />
+          <div class="form-group">
+            <label class="form-label" for="reviewTitle">Title <span class="form-required">*</span></label>
+            <input class="form-input" type="text" id="reviewTitle" required placeholder="e.g. Resume v2 - Post-feedback revision" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reviewSummary">Summary</label>
+            <textarea class="form-input form-textarea" id="reviewSummary" rows="4" placeholder="Key feedback points, what changed, what to focus on next..."></textarea>
+          </div>
+          <div class="form-group" id="fileGroup">
+            <label class="form-label" for="reviewFile">Annotated PDF <span class="form-required">*</span></label>
+            <input class="form-input" type="file" id="reviewFile" accept=".pdf" />
+            <p class="form-file-hint">Upload the annotated resume PDF (from the resume annotate tool).</p>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reviewVersion">Version Number</label>
+            <input class="form-input" type="number" id="reviewVersion" min="1" value="1" style="max-width:100px;" />
+          </div>
+          <div style="display:flex; gap:var(--space-md); margin-top:var(--space-lg);">
+            <button type="submit" class="btn btn--accent" id="saveBtn">Save Review</button>
+            <button type="button" class="btn btn--outline" id="cancelBtn">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="reviewList"></div>
+      <div class="empty-state" id="emptyState" hidden>
+        <h2 class="empty-state__heading">No resume reviews yet.</h2>
+        <p class="empty-state__text">Upload an annotated resume PDF for this client.</p>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+  <script src="../../firebase/firebase-config.js"></script>
+  <script src="../../firebase/auth-guard.js"></script>
+  <script src="../../firebase/firestore-helpers.js"></script>
+  <script src="resume-feedback.js"></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume Feedback - Empath Portal</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="../../empath-icon.png" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="stylesheet" href="../portal.css" />
+</head>
+<body>
+
+  <nav class="nav" id="nav" role="navigation" aria-label="Portal navigation">
+    <div class="nav__inner container">
+      <a href="/portal/" class="nav__logo" aria-label="Client portal home">
+        <img src="../../empath-icon.png" alt="" class="nav__logo-icon" aria-hidden="true" />
+        Empath Portal
+      </a>
+      <div class="nav__links" id="navLinks" role="menubar">
+        <a href="/portal/" class="nav__link" role="menuitem">Dashboard</a>
+        <a href="/portal/sessions/" class="nav__link" role="menuitem">Sessions</a>
+        <a href="/portal/job-analysis/" class="nav__link" role="menuitem">Job Analysis</a>
+        <a href="/portal/resume-feedback/" class="nav__link" role="menuitem">Resume</a>
+        <a href="/portal/progress/" class="nav__link" role="menuitem">Progress</a>
+        <button class="btn btn--outline nav__cta" id="signOutBtn">Sign Out</button>
+      </div>
+      <button class="nav__hamburger" id="hamburger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="navLinks">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="app-sidebar__section">
+        <div class="app-sidebar__label">Portal</div>
+        <a href="/portal/" class="app-sidebar__link">Dashboard</a>
+        <a href="/portal/sessions/" class="app-sidebar__link">Sessions</a>
+        <a href="/portal/job-analysis/" class="app-sidebar__link">Job Analysis</a>
+        <a href="/portal/resume-feedback/" class="app-sidebar__link is-active">Resume Feedback</a>
+        <a href="/portal/progress/" class="app-sidebar__link">Progress</a>
+      </div>
+    </aside>
+
+    <main class="app-content">
+      <div class="app-page-header">
+        <h1 class="app-page-header__title">Resume Feedback</h1>
+        <p class="app-page-header__subtitle">Annotated resume reviews and feedback from David.</p>
+      </div>
+
+      <div id="reviewList"></div>
+
+      <div class="empty-state" id="emptyState" hidden>
+        <h2 class="empty-state__heading">No resume reviews yet.</h2>
+        <p class="empty-state__text">Your annotated resume reviews will appear here after David completes your review.</p>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="../../firebase/firebase-config.js"></script>
+  <script src="../../firebase/auth-guard.js"></script>
+  <script src="../../firebase/firestore-helpers.js"></script>
+  <script>
+  (function () {
+    document.addEventListener('empathAuthReady', async function () {
+      var uid = window.empathAuth.user.uid;
+
+      document.getElementById('signOutBtn').addEventListener('click', function () {
+        auth.signOut().then(function () { window.location.replace('/login/'); });
+      });
+
+      var hamburger = document.getElementById('hamburger');
+      var navLinks = document.getElementById('navLinks');
+      if (hamburger) {
+        hamburger.addEventListener('click', function () {
+          var open = navLinks.classList.toggle('is-open');
+          hamburger.setAttribute('aria-expanded', open);
+        });
+      }
+
+      try {
+        var items = await Empath.db.getCollection('users/' + uid + '/resumeReviews', 'createdAt', 'desc');
+        if (items.length === 0) {
+          document.getElementById('emptyState').hidden = false;
+          return;
+        }
+
+        document.getElementById('reviewList').innerHTML = items.map(function (r) {
+          var date = r.createdAt && r.createdAt.toDate ? r.createdAt.toDate().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+          return '<div class="app-card">' +
+            '<div class="app-card__header">' +
+              '<span class="app-card__title">' + esc(r.title) + '</span>' +
+              '<span class="app-card__meta">Version ' + (r.version || 1) + ' &middot; ' + date + '</span>' +
+            '</div>' +
+            '<div class="app-card__body">' +
+              (r.summary ? '<p style="white-space:pre-wrap; margin-bottom:var(--space-md);">' + esc(r.summary) + '</p>' : '') +
+              (r.pdfUrl ? '<a href="' + esc(r.pdfUrl) + '" target="_blank" rel="noopener" class="btn btn--accent btn--sm">View Annotated PDF</a>' : '') +
+            '</div></div>';
+        }).join('');
+      } catch (err) {
+        console.error('Load error:', err);
+      }
+
+      function esc(str) { var el = document.createElement('span'); el.textContent = str || ''; return el.innerHTML; }
+    });
+  })();
+  </script>
+</body>
+</html>

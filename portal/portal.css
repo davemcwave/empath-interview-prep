@@ -1,0 +1,334 @@
+/* ============================================================
+   CLIENT PORTAL STYLES
+   Imports the shared admin.css layout (app-layout, sidebar,
+   cards, etc.) and adds portal-specific overrides.
+============================================================ */
+
+/* ---- Portal uses same layout as admin ---- */
+/* admin.css is loaded on admin pages; for portal, we inline
+   the same layout styles so both share the design. ---- */
+
+/* ---- App shell ---- */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  padding-top: var(--nav-height);
+}
+
+.app-sidebar {
+  position: fixed;
+  top: var(--nav-height);
+  left: 0;
+  bottom: 0;
+  width: 240px;
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  padding: var(--space-xl) 0;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.app-sidebar__section {
+  padding: 0 var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+.app-sidebar__label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-sm);
+}
+
+.app-sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  margin: 0 calc(-1 * var(--space-md));
+  border-radius: var(--radius-sm);
+  font-size: 0.9375rem;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.app-sidebar__link:hover {
+  background: var(--color-accent-light);
+  color: var(--color-text);
+}
+
+.app-sidebar__link.is-active {
+  background: var(--color-accent-light);
+  color: var(--color-accent);
+  font-weight: 500;
+}
+
+.app-sidebar__link svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.app-content {
+  flex: 1;
+  margin-left: 240px;
+  padding: var(--space-2xl) var(--space-2xl) var(--space-4xl);
+  max-width: 960px;
+}
+
+/* ---- Page header ---- */
+.app-page-header {
+  margin-bottom: var(--space-2xl);
+}
+
+.app-page-header__title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  margin-bottom: var(--space-xs);
+}
+
+.app-page-header__subtitle {
+  color: var(--color-text-muted);
+  font-size: 1rem;
+}
+
+/* ---- Cards ---- */
+.app-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  transition: box-shadow var(--transition-fast);
+}
+
+.app-card + .app-card {
+  margin-top: var(--space-md);
+}
+
+.app-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-sm);
+}
+
+.app-card__title {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.app-card__meta {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+}
+
+.app-card__body {
+  color: var(--color-text-muted);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+/* ---- Stat cards ---- */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--space-md);
+  margin-bottom: var(--space-2xl);
+}
+
+.stat-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  text-align: center;
+}
+
+.stat-card__value {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  color: var(--color-accent);
+  line-height: 1.2;
+}
+
+.stat-card__label {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  margin-top: var(--space-xs);
+}
+
+/* ---- Badges ---- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.625rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.badge--strong   { background: #E8F5E9; color: #2E7D32; }
+.badge--moderate { background: #FFF3E0; color: #E65100; }
+.badge--stretch  { background: #FFEBEE; color: #C62828; }
+.badge--high     { background: #FFEBEE; color: #C62828; }
+.badge--medium   { background: #FFF3E0; color: #E65100; }
+.badge--low      { background: #E8F5E9; color: #2E7D32; }
+
+/* Pipeline badges */
+.badge--applied      { background: var(--color-teal-light); color: var(--color-teal); }
+.badge--phone-screen { background: #E8EAF6; color: #283593; }
+.badge--technical    { background: #F3E5F5; color: #6A1B9A; }
+.badge--onsite       { background: #FFF3E0; color: #E65100; }
+.badge--offer        { background: #E8F5E9; color: #2E7D32; }
+.badge--rejected     { background: #FFEBEE; color: #C62828; }
+.badge--withdrawn    { background: #F5F5F5; color: #757575; }
+
+/* ---- Action items (read-only for clients) ---- */
+.action-items {
+  list-style: none;
+  margin: var(--space-md) 0 0;
+}
+
+.action-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding: var(--space-xs) 0;
+  font-size: 0.9375rem;
+}
+
+.action-item input[type="checkbox"] {
+  margin-top: 0.3em;
+  accent-color: var(--color-accent);
+}
+
+.action-item--completed {
+  text-decoration: line-through;
+  color: var(--color-text-muted);
+}
+
+/* ---- Empty state ---- */
+.empty-state {
+  text-align: center;
+  padding: var(--space-3xl) var(--space-lg);
+  color: var(--color-text-muted);
+}
+
+.empty-state__heading {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  color: var(--color-text);
+  margin-bottom: var(--space-sm);
+}
+
+.empty-state__text {
+  font-size: 0.9375rem;
+}
+
+/* ---- Themes list (job analysis) ---- */
+.theme-list {
+  list-style: none;
+  margin: var(--space-md) 0;
+}
+
+.theme-item {
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.theme-item:last-child {
+  border-bottom: none;
+}
+
+.theme-item__name {
+  font-weight: 500;
+}
+
+.theme-item__freq {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  margin-left: var(--space-sm);
+}
+
+/* ---- Gap table ---- */
+.gap-list {
+  margin: var(--space-md) 0;
+}
+
+.gap-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.gap-item:last-child {
+  border-bottom: none;
+}
+
+.gap-item__area {
+  font-weight: 500;
+  min-width: 140px;
+}
+
+.gap-item__rec {
+  flex: 1;
+  color: var(--color-text-muted);
+  font-size: 0.9375rem;
+}
+
+/* ---- Pipeline table ---- */
+.pipeline-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pipeline-table th {
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.pipeline-table td {
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.9375rem;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+  .app-sidebar {
+    display: none;
+  }
+
+  .app-content {
+    margin-left: 0;
+    padding: var(--space-xl) var(--container-pad);
+  }
+
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .gap-item {
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+}
+
+/* ---- Auth loading ---- */
+html.auth-loading .app-layout {
+  opacity: 0.3;
+  pointer-events: none;
+}

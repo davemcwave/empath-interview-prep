@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Progress - Empath Portal</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="../../empath-icon.png" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="stylesheet" href="../portal.css" />
+</head>
+<body>
+
+  <nav class="nav" id="nav" role="navigation" aria-label="Portal navigation">
+    <div class="nav__inner container">
+      <a href="/portal/" class="nav__logo" aria-label="Client portal home">
+        <img src="../../empath-icon.png" alt="" class="nav__logo-icon" aria-hidden="true" />
+        Empath Portal
+      </a>
+      <div class="nav__links" id="navLinks" role="menubar">
+        <a href="/portal/" class="nav__link" role="menuitem">Dashboard</a>
+        <a href="/portal/sessions/" class="nav__link" role="menuitem">Sessions</a>
+        <a href="/portal/job-analysis/" class="nav__link" role="menuitem">Job Analysis</a>
+        <a href="/portal/resume-feedback/" class="nav__link" role="menuitem">Resume</a>
+        <a href="/portal/progress/" class="nav__link" role="menuitem">Progress</a>
+        <button class="btn btn--outline nav__cta" id="signOutBtn">Sign Out</button>
+      </div>
+      <button class="nav__hamburger" id="hamburger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="navLinks">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="app-sidebar__section">
+        <div class="app-sidebar__label">Portal</div>
+        <a href="/portal/" class="app-sidebar__link">Dashboard</a>
+        <a href="/portal/sessions/" class="app-sidebar__link">Sessions</a>
+        <a href="/portal/job-analysis/" class="app-sidebar__link">Job Analysis</a>
+        <a href="/portal/resume-feedback/" class="app-sidebar__link">Resume Feedback</a>
+        <a href="/portal/progress/" class="app-sidebar__link is-active">Progress</a>
+      </div>
+    </aside>
+
+    <main class="app-content">
+      <div class="app-page-header">
+        <h1 class="app-page-header__title">Progress & Pipeline</h1>
+        <p class="app-page-header__subtitle">Track your job search journey.</p>
+      </div>
+
+      <!-- Stats -->
+      <div class="stat-grid" id="statsGrid">
+        <div class="stat-card">
+          <div class="stat-card__value" id="statApps">0</div>
+          <div class="stat-card__label">Applications</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__value" id="statPhoneScreens">0</div>
+          <div class="stat-card__label">Phone Screens</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__value" id="statTechnical">0</div>
+          <div class="stat-card__label">Technical</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__value" id="statOnsite">0</div>
+          <div class="stat-card__label">Onsite</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__value" id="statOffers">0</div>
+          <div class="stat-card__label">Offers</div>
+        </div>
+      </div>
+
+      <!-- Pipeline -->
+      <h2 style="font-family:var(--font-heading); font-size:1.25rem; margin-bottom:var(--space-lg);">Pipeline</h2>
+      <div id="pipelineSection">
+        <div class="empty-state" id="pipelineEmpty">
+          <p class="empty-state__text">No companies in your pipeline yet.</p>
+        </div>
+        <table class="pipeline-table" id="pipelineTable" hidden>
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th>Role</th>
+              <th>Stage</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody id="pipelineBody"></tbody>
+        </table>
+      </div>
+
+      <!-- Weekly goals -->
+      <h2 style="font-family:var(--font-heading); font-size:1.25rem; margin:var(--space-2xl) 0 var(--space-lg);">Weekly Goals</h2>
+      <div id="goalsSection">
+        <div class="empty-state" id="goalsEmpty">
+          <p class="empty-state__text">No weekly goals set yet.</p>
+        </div>
+        <ul class="action-items" id="goalsList" hidden></ul>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="../../firebase/firebase-config.js"></script>
+  <script src="../../firebase/auth-guard.js"></script>
+  <script src="../../firebase/firestore-helpers.js"></script>
+  <script>
+  (function () {
+    var stageLabels = { 'applied': 'Applied', 'phone-screen': 'Phone Screen', 'technical': 'Technical', 'onsite': 'Onsite', 'offer': 'Offer', 'rejected': 'Rejected', 'withdrawn': 'Withdrawn' };
+
+    document.addEventListener('empathAuthReady', async function () {
+      var uid = window.empathAuth.user.uid;
+
+      document.getElementById('signOutBtn').addEventListener('click', function () {
+        auth.signOut().then(function () { window.location.replace('/login/'); });
+      });
+
+      var hamburger = document.getElementById('hamburger');
+      var navLinks = document.getElementById('navLinks');
+      if (hamburger) {
+        hamburger.addEventListener('click', function () {
+          var open = navLinks.classList.toggle('is-open');
+          hamburger.setAttribute('aria-expanded', open);
+        });
+      }
+
+      try {
+        var data = await Empath.db.getDoc('users/' + uid + '/progress/current');
+        if (!data) return;
+
+        // Stats
+        document.getElementById('statApps').textContent = data.applicationsSubmitted || 0;
+        document.getElementById('statPhoneScreens').textContent = data.phoneScreens || 0;
+        document.getElementById('statTechnical').textContent = data.technicalInterviews || 0;
+        document.getElementById('statOnsite').textContent = data.onsiteInterviews || 0;
+        document.getElementById('statOffers').textContent = data.offers || 0;
+
+        // Pipeline
+        if (data.pipeline && data.pipeline.length > 0) {
+          document.getElementById('pipelineEmpty').hidden = true;
+          var table = document.getElementById('pipelineTable');
+          table.hidden = false;
+          document.getElementById('pipelineBody').innerHTML = data.pipeline.map(function (p) {
+            return '<tr>' +
+              '<td>' + esc(p.company) + '</td>' +
+              '<td>' + esc(p.role) + '</td>' +
+              '<td><span class="badge badge--' + esc(p.stage) + '">' + (stageLabels[p.stage] || p.stage) + '</span></td>' +
+              '<td>' + esc(p.notes) + '</td>' +
+              '</tr>';
+          }).join('');
+        }
+
+        // Goals
+        if (data.weeklyGoals && data.weeklyGoals.length > 0) {
+          document.getElementById('goalsEmpty').hidden = true;
+          var list = document.getElementById('goalsList');
+          list.hidden = false;
+          list.innerHTML = data.weeklyGoals.map(function (g) {
+            var cls = g.completed ? ' action-item--completed' : '';
+            var checked = g.completed ? ' checked' : '';
+            return '<li class="action-item' + cls + '"><input type="checkbox"' + checked + ' disabled /><span>' + esc(g.text) + '</span></li>';
+          }).join('');
+        }
+      } catch (err) {
+        console.error('Load error:', err);
+      }
+
+      function esc(str) { var el = document.createElement('span'); el.textContent = str || ''; return el.innerHTML; }
+    });
+  })();
+  </script>
+</body>
+</html>

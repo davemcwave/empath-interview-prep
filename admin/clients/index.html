@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Client Detail - Empath Admin</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="../../empath-icon.png" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="stylesheet" href="../admin.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav" role="navigation" aria-label="Admin navigation">
+    <div class="nav__inner container">
+      <a href="/admin/" class="nav__logo" aria-label="Admin dashboard">
+        <img src="../../empath-icon.png" alt="" class="nav__logo-icon" aria-hidden="true" />
+        Empath Admin
+      </a>
+      <div class="nav__links" id="navLinks" role="menubar">
+        <a href="/admin/" class="nav__link" role="menuitem">Clients</a>
+        <button class="btn btn--outline nav__cta" id="signOutBtn">Sign Out</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="app-sidebar__section">
+        <div class="app-sidebar__label">Admin</div>
+        <a href="/admin/" class="app-sidebar__link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Clients
+        </a>
+      </div>
+      <div class="app-sidebar__section" id="clientNav">
+        <div class="app-sidebar__label" id="clientNameSidebar">Client</div>
+        <a href="#" class="app-sidebar__link" id="linkSessions">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Sessions
+        </a>
+        <a href="#" class="app-sidebar__link" id="linkJobAnalysis">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          Job Analysis
+        </a>
+        <a href="#" class="app-sidebar__link" id="linkResume">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Resume Feedback
+        </a>
+        <a href="#" class="app-sidebar__link" id="linkProgress">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          Progress
+        </a>
+      </div>
+    </aside>
+
+    <main class="app-content">
+      <!-- Client profile header -->
+      <div class="app-page-header" id="clientHeader">
+        <h1 class="app-page-header__title" id="clientName">Loading...</h1>
+        <p class="app-page-header__subtitle" id="clientEmail"></p>
+      </div>
+
+      <!-- Profile card -->
+      <div class="app-card" id="profileCard">
+        <div class="app-card__header">
+          <span class="app-card__title">Client Profile</span>
+          <button class="btn btn--outline btn--sm" id="editProfileBtn">Edit</button>
+        </div>
+        <div class="app-card__body" id="profileView">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Edit form (hidden by default) -->
+        <form class="app-card__body" id="profileForm" hidden>
+          <div class="form-group">
+            <label class="form-label" for="editName">Display Name</label>
+            <input class="form-input" type="text" id="editName" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="editStatus">Status</label>
+            <select class="form-input" id="editStatus">
+              <option value="active">Active</option>
+              <option value="paused">Paused</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="editPlan">Plan</label>
+            <input class="form-input" type="text" id="editPlan" placeholder="e.g. Monthly Coaching" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="editNotes">Internal Notes</label>
+            <textarea class="form-input form-textarea" id="editNotes" rows="4" placeholder="Notes about this client (only visible to you)"></textarea>
+          </div>
+          <div style="display:flex; gap:var(--space-md); margin-top:var(--space-lg);">
+            <button type="submit" class="btn btn--accent">Save</button>
+            <button type="button" class="btn btn--outline" id="cancelEditBtn">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Quick links to sections -->
+      <h2 style="font-family:var(--font-heading); font-size:1.25rem; margin:var(--space-2xl) 0 var(--space-lg);">Manage Content</h2>
+
+      <div id="sectionCards">
+        <a href="#" class="app-card" id="cardSessions" style="display:block; text-decoration:none; color:inherit;">
+          <div class="app-card__header">
+            <span class="app-card__title">Sessions & Notes</span>
+            <span class="app-card__meta" id="sessionCount">—</span>
+          </div>
+          <div class="app-card__body">View and manage coaching session notes and action items.</div>
+        </a>
+
+        <a href="#" class="app-card" id="cardJobAnalysis" style="display:block; text-decoration:none; color:inherit;">
+          <div class="app-card__header">
+            <span class="app-card__title">Job Posting Analysis</span>
+            <span class="app-card__meta" id="analysisCount">—</span>
+          </div>
+          <div class="app-card__body">Theme breakdowns and gap analyses for target roles.</div>
+        </a>
+
+        <a href="#" class="app-card" id="cardResume" style="display:block; text-decoration:none; color:inherit;">
+          <div class="app-card__header">
+            <span class="app-card__title">Resume Feedback</span>
+            <span class="app-card__meta" id="resumeCount">—</span>
+          </div>
+          <div class="app-card__body">Annotated resume reviews and feedback history.</div>
+        </a>
+
+        <a href="#" class="app-card" id="cardProgress" style="display:block; text-decoration:none; color:inherit;">
+          <div class="app-card__header">
+            <span class="app-card__title">Progress & Pipeline</span>
+          </div>
+          <div class="app-card__body">Track applications, interviews, offers, and weekly goals.</div>
+        </a>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="../../firebase/firebase-config.js"></script>
+  <script src="../../firebase/auth-guard.js"></script>
+  <script src="../../firebase/firestore-helpers.js"></script>
+  <script src="clients.js"></script>
+</body>
+</html>

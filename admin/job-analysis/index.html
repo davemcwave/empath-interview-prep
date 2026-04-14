@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Job Analysis - Empath Admin</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="../../empath-icon.png" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="stylesheet" href="../admin.css" />
+</head>
+<body>
+
+  <nav class="nav" id="nav" role="navigation" aria-label="Admin navigation">
+    <div class="nav__inner container">
+      <a href="/admin/" class="nav__logo" aria-label="Admin dashboard">
+        <img src="../../empath-icon.png" alt="" class="nav__logo-icon" aria-hidden="true" />
+        Empath Admin
+      </a>
+      <div class="nav__links" id="navLinks" role="menubar">
+        <a href="/admin/" class="nav__link" role="menuitem">Clients</a>
+        <button class="btn btn--outline nav__cta" id="signOutBtn">Sign Out</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="app-sidebar__section">
+        <div class="app-sidebar__label">Admin</div>
+        <a href="/admin/" class="app-sidebar__link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Clients
+        </a>
+      </div>
+      <div class="app-sidebar__section">
+        <div class="app-sidebar__label" id="clientNameSidebar">Client</div>
+        <a href="#" class="app-sidebar__link" id="linkSessions">Sessions</a>
+        <a href="#" class="app-sidebar__link is-active" id="linkJobAnalysis">Job Analysis</a>
+        <a href="#" class="app-sidebar__link" id="linkResume">Resume Feedback</a>
+        <a href="#" class="app-sidebar__link" id="linkProgress">Progress</a>
+      </div>
+    </aside>
+
+    <main class="app-content">
+      <div class="app-page-header">
+        <h1 class="app-page-header__title">Job Posting Analysis</h1>
+        <p class="app-page-header__subtitle" id="clientSubtitle"></p>
+      </div>
+
+      <div class="app-toolbar">
+        <button class="btn btn--accent" id="addAnalysisBtn">Add Analysis</button>
+        <a href="#" class="btn btn--outline" id="backToClientBtn">Back to Client</a>
+      </div>
+
+      <!-- Analysis form -->
+      <div class="app-card" id="formCard" hidden>
+        <div class="app-card__header">
+          <span class="app-card__title" id="formTitle">New Analysis</span>
+        </div>
+        <form id="analysisForm">
+          <input type="hidden" id="editingId" value="" />
+          <div class="form-row form-row--two">
+            <div class="form-group">
+              <label class="form-label" for="companyName">Company <span class="form-required">*</span></label>
+              <input class="form-input" type="text" id="companyName" required placeholder="e.g. Lyra Health" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="roleTitle">Role Title <span class="form-required">*</span></label>
+              <input class="form-input" type="text" id="roleTitle" required placeholder="e.g. Senior Data Analyst" />
+            </div>
+          </div>
+          <div class="form-row form-row--two">
+            <div class="form-group">
+              <label class="form-label" for="postingUrl">Posting URL <span class="form-optional">(optional)</span></label>
+              <input class="form-input" type="url" id="postingUrl" placeholder="https://..." />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="overallFit">Overall Fit</label>
+              <select class="form-input" id="overallFit">
+                <option value="">Select...</option>
+                <option value="strong">Strong</option>
+                <option value="moderate">Moderate</option>
+                <option value="stretch">Stretch</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Themes -->
+          <div class="form-group">
+            <label class="form-label">Themes</label>
+            <div class="dynamic-fields" id="themesContainer"></div>
+            <button type="button" class="add-field-btn" id="addThemeBtn">+ Add Theme</button>
+          </div>
+
+          <!-- Gaps -->
+          <div class="form-group">
+            <label class="form-label">Gaps</label>
+            <div class="dynamic-fields" id="gapsContainer"></div>
+            <button type="button" class="add-field-btn" id="addGapBtn">+ Add Gap</button>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="analysisNotes">Notes</label>
+            <textarea class="form-input form-textarea" id="analysisNotes" rows="6" placeholder="Overall analysis, prep recommendations..."></textarea>
+          </div>
+
+          <div style="display:flex; gap:var(--space-md); margin-top:var(--space-lg);">
+            <button type="submit" class="btn btn--accent">Save Analysis</button>
+            <button type="button" class="btn btn--outline" id="cancelBtn">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="analysisList"></div>
+      <div class="empty-state" id="emptyState" hidden>
+        <h2 class="empty-state__heading">No analyses yet.</h2>
+        <p class="empty-state__text">Add a job posting analysis for this client.</p>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="../../firebase/firebase-config.js"></script>
+  <script src="../../firebase/auth-guard.js"></script>
+  <script src="../../firebase/firestore-helpers.js"></script>
+  <script src="job-analysis.js"></script>
+</body>
+</html>

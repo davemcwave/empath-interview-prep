@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sessions - Empath Admin</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="../../empath-icon.png" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="stylesheet" href="../admin.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav" role="navigation" aria-label="Admin navigation">
+    <div class="nav__inner container">
+      <a href="/admin/" class="nav__logo" aria-label="Admin dashboard">
+        <img src="../../empath-icon.png" alt="" class="nav__logo-icon" aria-hidden="true" />
+        Empath Admin
+      </a>
+      <div class="nav__links" id="navLinks" role="menubar">
+        <a href="/admin/" class="nav__link" role="menuitem">Clients</a>
+        <button class="btn btn--outline nav__cta" id="signOutBtn">Sign Out</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="app-sidebar__section">
+        <div class="app-sidebar__label">Admin</div>
+        <a href="/admin/" class="app-sidebar__link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Clients
+        </a>
+      </div>
+      <div class="app-sidebar__section">
+        <div class="app-sidebar__label" id="clientNameSidebar">Client</div>
+        <a href="#" class="app-sidebar__link is-active" id="linkSessions">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Sessions
+        </a>
+        <a href="#" class="app-sidebar__link" id="linkJobAnalysis">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          Job Analysis
+        </a>
+        <a href="#" class="app-sidebar__link" id="linkResume">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Resume Feedback
+        </a>
+        <a href="#" class="app-sidebar__link" id="linkProgress">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          Progress
+        </a>
+      </div>
+    </aside>
+
+    <main class="app-content">
+      <div class="app-page-header">
+        <h1 class="app-page-header__title">Session Notes</h1>
+        <p class="app-page-header__subtitle" id="clientSubtitle"></p>
+      </div>
+
+      <div class="app-toolbar">
+        <button class="btn btn--accent" id="addSessionBtn">Add Session</button>
+        <a href="#" class="btn btn--outline" id="backToClientBtn">Back to Client</a>
+      </div>
+
+      <!-- Session form (hidden by default) -->
+      <div class="app-card" id="sessionFormCard" hidden>
+        <div class="app-card__header">
+          <span class="app-card__title" id="formTitle">New Session</span>
+        </div>
+        <form id="sessionForm">
+          <input type="hidden" id="editingId" value="" />
+          <div class="form-row form-row--two">
+            <div class="form-group">
+              <label class="form-label" for="sessionDate">Date <span class="form-required">*</span></label>
+              <input class="form-input" type="date" id="sessionDate" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="sessionType">Type <span class="form-required">*</span></label>
+              <select class="form-input" id="sessionType" required>
+                <option value="">Select type...</option>
+                <option value="check-in">Check-In</option>
+                <option value="mock-behavioral">Mock Behavioral Interview</option>
+                <option value="mock-technical">Mock Technical Interview</option>
+                <option value="mock-full">Full Mock Interview</option>
+                <option value="live-coding">Live Coding Practice</option>
+                <option value="strategy">Job Search Strategy</option>
+                <option value="negotiation">Salary Negotiation</option>
+                <option value="offer-coaching">Offer Coaching</option>
+                <option value="resume-review">Resume Review</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row form-row--two">
+            <div class="form-group">
+              <label class="form-label" for="sessionTitle">Title <span class="form-required">*</span></label>
+              <input class="form-input" type="text" id="sessionTitle" required placeholder="e.g. Check-In #1 - Goals & Direction" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="sessionDuration">Duration (minutes) <span class="form-optional">(optional)</span></label>
+              <input class="form-input" type="number" id="sessionDuration" min="0" placeholder="60" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="sessionNotes">Notes <span class="form-required">*</span></label>
+            <textarea class="form-input form-textarea" id="sessionNotes" rows="8" required placeholder="Session notes, observations, feedback..."></textarea>
+          </div>
+
+          <!-- Action items -->
+          <div class="form-group">
+            <label class="form-label">Action Items</label>
+            <div class="dynamic-fields" id="actionItemsContainer"></div>
+            <button type="button" class="add-field-btn" id="addActionItemBtn">+ Add Action Item</button>
+          </div>
+
+          <div style="display:flex; gap:var(--space-md); margin-top:var(--space-lg);">
+            <button type="submit" class="btn btn--accent" id="saveSessionBtn">Save Session</button>
+            <button type="button" class="btn btn--outline" id="cancelSessionBtn">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Session list -->
+      <div id="sessionList"></div>
+
+      <div class="empty-state" id="emptyState" hidden>
+        <h2 class="empty-state__heading">No sessions yet.</h2>
+        <p class="empty-state__text">Add your first coaching session note for this client.</p>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="../../firebase/firebase-config.js"></script>
+  <script src="../../firebase/auth-guard.js"></script>
+  <script src="../../firebase/firestore-helpers.js"></script>
+  <script src="sessions.js"></script>
+</body>
+</html>

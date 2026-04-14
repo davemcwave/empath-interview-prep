@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - Empath Interview Prep</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="../empath-icon.png" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav" role="navigation" aria-label="Admin navigation">
+    <div class="nav__inner container">
+      <a href="/admin/" class="nav__logo" aria-label="Admin dashboard">
+        <img src="../empath-icon.png" alt="" class="nav__logo-icon" aria-hidden="true" />
+        Empath Admin
+      </a>
+      <div class="nav__links" id="navLinks" role="menubar">
+        <a href="/admin/" class="nav__link" role="menuitem">Clients</a>
+        <button class="btn btn--outline nav__cta" id="signOutBtn">Sign Out</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <div class="app-sidebar__section">
+        <div class="app-sidebar__label">Admin</div>
+        <a href="/admin/" class="app-sidebar__link is-active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Clients
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="app-content">
+      <div class="app-page-header">
+        <h1 class="app-page-header__title">Clients</h1>
+        <p class="app-page-header__subtitle">Manage your coaching clients and their portal content.</p>
+      </div>
+
+      <div class="app-toolbar">
+        <input type="text" class="form-input app-toolbar__search" id="searchInput" placeholder="Search clients..." />
+        <button class="btn btn--accent" id="inviteBtn">Invite Client</button>
+      </div>
+
+      <!-- Client list -->
+      <div id="clientList">
+        <table class="client-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Status</th>
+              <th>Plan</th>
+              <th>Start Date</th>
+            </tr>
+          </thead>
+          <tbody id="clientTableBody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Empty state -->
+      <div class="empty-state" id="emptyState" hidden>
+        <h2 class="empty-state__heading">No clients yet.</h2>
+        <p class="empty-state__text">Invite your first client to get started.</p>
+        <button class="btn btn--accent" id="emptyInviteBtn">Invite Client</button>
+      </div>
+    </main>
+  </div>
+
+  <!-- Invite modal -->
+  <div class="modal-overlay" id="inviteModal" hidden>
+    <div class="modal">
+      <h2 class="modal__heading">Invite a New Client</h2>
+      <form id="inviteForm">
+        <div class="form-group">
+          <label class="form-label" for="inviteName">Client Name <span class="form-required">*</span></label>
+          <input class="form-input" type="text" id="inviteName" required placeholder="Jane Smith" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="inviteEmail">Client Email <span class="form-required">*</span></label>
+          <input class="form-input" type="email" id="inviteEmail" required placeholder="jane@example.com" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="invitePlan">Plan <span class="form-optional">(optional)</span></label>
+          <input class="form-input" type="text" id="invitePlan" placeholder="e.g. Monthly Coaching" />
+        </div>
+        <div class="modal__actions">
+          <button type="button" class="btn btn--outline" id="cancelInvite">Cancel</button>
+          <button type="submit" class="btn btn--accent" id="sendInviteBtn">Send Invite</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="../firebase/firebase-config.js"></script>
+  <script src="../firebase/auth-guard.js"></script>
+  <script src="../firebase/firestore-helpers.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
