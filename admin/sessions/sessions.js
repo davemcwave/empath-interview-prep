@@ -99,6 +99,7 @@
           '<button class="btn btn--outline btn--sm edit-btn" data-id="' + s.id + '">Edit</button>' +
           '<button class="btn btn--outline btn--sm delete-btn" data-id="' + s.id + '" style="color:#C0392B;border-color:#C0392B;">Delete</button>' +
         '</div>' +
+        '<div class="comment-container" data-path="' + collectionPath + '/' + s.id + '"></div>' +
         '</div>';
     }).join('');
 
@@ -108,6 +109,11 @@
     });
     sessionList.querySelectorAll('.delete-btn').forEach(function (btn) {
       btn.addEventListener('click', function () { deleteSession(btn.dataset.id); });
+    });
+
+    // Render comment threads
+    document.querySelectorAll('.comment-container').forEach(function (el) {
+      Empath.renderCommentThread(el, el.dataset.path, 'admin', 'David');
     });
   }
 

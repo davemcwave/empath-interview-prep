@@ -75,9 +75,12 @@
           (g.recommendation ? ' - ' + esc(g.recommendation) : '') + '</li>';
       }).join('');
 
+      var submittedBadge = a.submittedBy === 'client' ? '<span class="badge badge--submitted" style="margin-left:var(--space-sm);">Client submitted</span>' : '';
+
       return '<div class="app-card" data-id="' + a.id + '">' +
         '<div class="app-card__header">' +
           '<span class="app-card__title">' + esc(a.companyName) + ' - ' + esc(a.roleTitle) + '</span>' +
+          submittedBadge +
           (a.overallFit ? '<span class="badge badge--' + esc(a.overallFit) + '">' + esc(a.overallFit) + ' fit</span>' : '') +
         '</div>' +
         '<div class="app-card__body">' +
@@ -89,7 +92,9 @@
         '<div style="margin-top:var(--space-md); display:flex; gap:var(--space-sm);">' +
           '<button class="btn btn--outline btn--sm edit-btn" data-id="' + a.id + '">Edit</button>' +
           '<button class="btn btn--outline btn--sm delete-btn" data-id="' + a.id + '" style="color:#C0392B;border-color:#C0392B;">Delete</button>' +
-        '</div></div>';
+        '</div>' +
+        '<div class="comment-container" data-path="' + collectionPath + '/' + a.id + '"></div>' +
+        '</div>';
     }).join('');
 
     analysisList.querySelectorAll('.edit-btn').forEach(function (btn) {
@@ -97,6 +102,10 @@
     });
     analysisList.querySelectorAll('.delete-btn').forEach(function (btn) {
       btn.addEventListener('click', function () { deleteItem(btn.dataset.id); });
+    });
+
+    document.querySelectorAll('.comment-container').forEach(function (el) {
+      Empath.renderCommentThread(el, el.dataset.path, 'admin', 'David');
     });
   }
 

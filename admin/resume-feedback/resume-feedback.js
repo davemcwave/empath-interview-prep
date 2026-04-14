@@ -1,5 +1,5 @@
 /**
- * Admin - Resume Feedback (Upload + Manage)
+ * Admin - Resume Review (Upload + Manage)
  */
 (function () {
   var uid = new URLSearchParams(window.location.search).get('uid');
@@ -73,11 +73,17 @@
         '</div>' +
         '<div style="margin-top:var(--space-md); display:flex; gap:var(--space-sm);">' +
           '<button class="btn btn--outline btn--sm delete-btn" data-id="' + r.id + '" data-storage="' + escAttr(r.pdfStoragePath || '') + '" style="color:#C0392B;border-color:#C0392B;">Delete</button>' +
-        '</div></div>';
+        '</div>' +
+        '<div class="comment-container" data-path="' + collectionPath + '/' + r.id + '"></div>' +
+        '</div>';
     }).join('');
 
     reviewList.querySelectorAll('.delete-btn').forEach(function (btn) {
       btn.addEventListener('click', function () { deleteReview(btn.dataset.id, btn.dataset.storage); });
+    });
+
+    document.querySelectorAll('.comment-container').forEach(function (el) {
+      Empath.renderCommentThread(el, el.dataset.path, 'admin', 'David');
     });
   }
 

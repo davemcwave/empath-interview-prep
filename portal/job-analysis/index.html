@@ -41,7 +41,7 @@
         <a href="/portal/" class="app-sidebar__link">Dashboard</a>
         <a href="/portal/sessions/" class="app-sidebar__link">Sessions</a>
         <a href="/portal/job-analysis/" class="app-sidebar__link is-active">Job Analysis</a>
-        <a href="/portal/resume-feedback/" class="app-sidebar__link">Resume Feedback</a>
+        <a href="/portal/resume-feedback/" class="app-sidebar__link">Resume Review</a>
         <a href="/portal/progress/" class="app-sidebar__link">Progress</a>
       </div>
     </aside>
@@ -52,11 +52,44 @@
         <p class="app-page-header__subtitle">Theme breakdowns and gap analyses for your target roles.</p>
       </div>
 
+      <div style="margin-bottom:var(--space-xl);">
+        <button class="btn btn--accent" id="submitJobBtn">Submit a Job Posting</button>
+      </div>
+
+      <!-- Client submission form -->
+      <div class="app-card" id="submitFormCard" hidden>
+        <div class="app-card__header">
+          <span class="app-card__title">Submit a Job Posting</span>
+        </div>
+        <form id="submitJobForm">
+          <div class="form-group">
+            <label class="form-label" for="submitCompany">Company <span class="form-required">*</span></label>
+            <input class="form-input" type="text" id="submitCompany" required placeholder="e.g. Lyra Health" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="submitRole">Role Title <span class="form-required">*</span></label>
+            <input class="form-input" type="text" id="submitRole" required placeholder="e.g. Senior Data Analyst" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="submitUrl">Posting URL <span class="form-optional">(optional)</span></label>
+            <input class="form-input" type="url" id="submitUrl" placeholder="https://..." />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="submitNotes">Notes or Job Description</label>
+            <textarea class="form-input form-textarea" id="submitNotes" rows="8" placeholder="Paste the job description or any notes here..."></textarea>
+          </div>
+          <div style="display:flex; gap:var(--space-md); margin-top:var(--space-md);">
+            <button type="submit" class="btn btn--accent" id="submitJobSaveBtn">Submit</button>
+            <button type="button" class="btn btn--outline" id="submitJobCancelBtn">Cancel</button>
+          </div>
+        </form>
+      </div>
+
       <div id="analysisList"></div>
 
       <div class="empty-state" id="emptyState" hidden>
         <h2 class="empty-state__heading">No analyses yet.</h2>
-        <p class="empty-state__text">Job posting analyses will appear here once David reviews your target roles.</p>
+        <p class="empty-state__text">Submit a job posting or wait for David to add an analysis for you.</p>
       </div>
     </main>
   </div>
@@ -85,42 +118,94 @@
         });
       }
 
-      try {
-        var items = await Empath.db.getCollection('users/' + uid + '/jobAnalyses', 'createdAt', 'desc');
-        if (items.length === 0) {
-          document.getElementById('emptyState').hidden = false;
-          return;
+      // Job submission form
+      var submitFormCard = document.getElementById('submitFormCard');
+      document.getElementById('submitJobBtn').addEventListener('click', function () {
+        submitFormCard.hidden = false;
+        submitFormCard.scrollIntoView({ behavior: 'smooth' });
+      });
+      document.getElementById('submitJobCancelBtn').addEventListener('click', function () {
+        submitFormCard.hidden = true;
+      });
+      document.getElementById('submitJobForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        var btn = document.getElementById('submitJobSaveBtn');
+        btn.disabled = true;
+        btn.textContent = 'Submitting...';
+        try {
+          await Empath.db.addDoc('users/' + uid + '/jobAnalyses', {
+            companyName: document.getElementById('submitCompany').value.trim(),
+            roleTitle: document.getElementById('submitRole').value.trim(),
+            postingUrl: document.getElementById('submitUrl').value.trim(),
+            notes: document.getElementById('submitNotes').value.trim(),
+            submittedBy: 'client',
+            themes: [],
+            gaps: [],
+            overallFit: ''
+          });
+          submitFormCard.hidden = true;
+          document.getElementById('submitJobForm').reset();
+          loadAnalyses();
+        } catch (err) {
+          console.error('Submit error:', err);
+          alert('Error submitting: ' + err.message);
+        } finally {
+          btn.disabled = false;
+          btn.textContent = 'Submit';
         }
+      });
 
-        document.getElementById('analysisList').innerHTML = items.map(function (a) {
-          var themesHtml = (a.themes || []).map(function (t) {
-            return '<li class="theme-item"><span class="theme-item__name">' + esc(t.name) + '</span>' +
-              (t.frequency ? '<span class="theme-item__freq">' + esc(t.frequency) + '</span>' : '') +
-              (t.details ? '<br><span style="color:var(--color-text-muted);font-size:0.9375rem;">' + esc(t.details) + '</span>' : '') +
-              '</li>';
-          }).join('');
+      loadAnalyses();
 
-          var gapsHtml = (a.gaps || []).map(function (g) {
-            return '<div class="gap-item">' +
-              '<span class="gap-item__area"><span class="badge badge--' + esc(g.severity) + '">' + esc(g.severity) + '</span> ' + esc(g.area) + '</span>' +
-              '<span class="gap-item__rec">' + esc(g.recommendation) + '</span>' +
+      async function loadAnalyses() {
+        try {
+          var items = await Empath.db.getCollection('users/' + uid + '/jobAnalyses', 'createdAt', 'desc');
+          if (items.length === 0) {
+            document.getElementById('analysisList').innerHTML = '';
+            document.getElementById('emptyState').hidden = false;
+            return;
+          }
+          document.getElementById('emptyState').hidden = true;
+
+          document.getElementById('analysisList').innerHTML = items.map(function (a) {
+            var submittedBadge = a.submittedBy === 'client' && !a.overallFit ? '<span class="badge badge--submitted">Pending review</span> ' : '';
+            var themesHtml = (a.themes || []).map(function (t) {
+              return '<li class="theme-item"><span class="theme-item__name">' + esc(t.name) + '</span>' +
+                (t.frequency ? '<span class="theme-item__freq">' + esc(t.frequency) + '</span>' : '') +
+                (t.details ? '<br><span style="color:var(--color-text-muted);font-size:0.9375rem;">' + esc(t.details) + '</span>' : '') +
+                '</li>';
+            }).join('');
+
+            var gapsHtml = (a.gaps || []).map(function (g) {
+              return '<div class="gap-item">' +
+                '<span class="gap-item__area"><span class="badge badge--' + esc(g.severity) + '">' + esc(g.severity) + '</span> ' + esc(g.area) + '</span>' +
+                '<span class="gap-item__rec">' + esc(g.recommendation) + '</span>' +
+                '</div>';
+            }).join('');
+
+            return '<div class="app-card">' +
+              '<div class="app-card__header">' +
+                '<span class="app-card__title">' + esc(a.companyName) + ' - ' + esc(a.roleTitle) + '</span>' +
+                submittedBadge +
+                (a.overallFit ? '<span class="badge badge--' + esc(a.overallFit) + '">' + esc(a.overallFit) + ' fit</span>' : '') +
+              '</div>' +
+              '<div class="app-card__body">' +
+                (a.postingUrl ? '<p style="margin-bottom:var(--space-md);"><a href="' + esc(a.postingUrl) + '" target="_blank" rel="noopener" style="color:var(--color-accent);">View Original Posting</a></p>' : '') +
+                (themesHtml ? '<h3 style="font-size:1rem; margin-bottom:var(--space-sm);">Themes</h3><ul class="theme-list">' + themesHtml + '</ul>' : '') +
+                (gapsHtml ? '<h3 style="font-size:1rem; margin:var(--space-lg) 0 var(--space-sm);">Gaps</h3><div class="gap-list">' + gapsHtml + '</div>' : '') +
+                (a.notes ? '<h3 style="font-size:1rem; margin:var(--space-lg) 0 var(--space-sm);">Notes</h3><p style="white-space:pre-wrap;">' + esc(a.notes) + '</p>' : '') +
+              '</div>' +
+              '<div class="comment-container" data-path="users/' + uid + '/jobAnalyses/' + a.id + '"></div>' +
               '</div>';
           }).join('');
 
-          return '<div class="app-card">' +
-            '<div class="app-card__header">' +
-              '<span class="app-card__title">' + esc(a.companyName) + ' - ' + esc(a.roleTitle) + '</span>' +
-              (a.overallFit ? '<span class="badge badge--' + esc(a.overallFit) + '">' + esc(a.overallFit) + ' fit</span>' : '') +
-            '</div>' +
-            '<div class="app-card__body">' +
-              (a.postingUrl ? '<p style="margin-bottom:var(--space-md);"><a href="' + esc(a.postingUrl) + '" target="_blank" rel="noopener" style="color:var(--color-accent);">View Original Posting</a></p>' : '') +
-              (themesHtml ? '<h3 style="font-size:1rem; margin-bottom:var(--space-sm);">Themes</h3><ul class="theme-list">' + themesHtml + '</ul>' : '') +
-              (gapsHtml ? '<h3 style="font-size:1rem; margin:var(--space-lg) 0 var(--space-sm);">Gaps</h3><div class="gap-list">' + gapsHtml + '</div>' : '') +
-              (a.notes ? '<h3 style="font-size:1rem; margin:var(--space-lg) 0 var(--space-sm);">Notes</h3><p style="white-space:pre-wrap;">' + esc(a.notes) + '</p>' : '') +
-            '</div></div>';
-        }).join('');
-      } catch (err) {
-        console.error('Load error:', err);
+          var authorName = window.empathAuth.userDoc.displayName || 'Client';
+          document.querySelectorAll('.comment-container').forEach(function (el) {
+            Empath.renderCommentThread(el, el.dataset.path, 'client', authorName);
+          });
+        } catch (err) {
+          console.error('Load error:', err);
+        }
       }
 
       function esc(str) { var el = document.createElement('span'); el.textContent = str || ''; return el.innerHTML; }

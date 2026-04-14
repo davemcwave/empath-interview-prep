@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Resume Feedback - Empath Portal</title>
+  <title>Resume Review - Empath Portal</title>
   <meta name="robots" content="noindex, nofollow" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -41,14 +41,14 @@
         <a href="/portal/" class="app-sidebar__link">Dashboard</a>
         <a href="/portal/sessions/" class="app-sidebar__link">Sessions</a>
         <a href="/portal/job-analysis/" class="app-sidebar__link">Job Analysis</a>
-        <a href="/portal/resume-feedback/" class="app-sidebar__link is-active">Resume Feedback</a>
+        <a href="/portal/resume-feedback/" class="app-sidebar__link is-active">Resume Review</a>
         <a href="/portal/progress/" class="app-sidebar__link">Progress</a>
       </div>
     </aside>
 
     <main class="app-content">
       <div class="app-page-header">
-        <h1 class="app-page-header__title">Resume Feedback</h1>
+        <h1 class="app-page-header__title">Resume Review</h1>
         <p class="app-page-header__subtitle">Annotated resume reviews and feedback from David.</p>
       </div>
 
@@ -102,8 +102,15 @@
             '<div class="app-card__body">' +
               (r.summary ? '<p style="white-space:pre-wrap; margin-bottom:var(--space-md);">' + esc(r.summary) + '</p>' : '') +
               (r.pdfUrl ? '<a href="' + esc(r.pdfUrl) + '" target="_blank" rel="noopener" class="btn btn--accent btn--sm">View Annotated PDF</a>' : '') +
-            '</div></div>';
+            '</div>' +
+            '<div class="comment-container" data-path="users/' + uid + '/resumeReviews/' + r.id + '"></div>' +
+            '</div>';
         }).join('');
+
+        var authorName = window.empathAuth.userDoc.displayName || 'Client';
+        document.querySelectorAll('.comment-container').forEach(function (el) {
+          Empath.renderCommentThread(el, el.dataset.path, 'client', authorName);
+        });
       } catch (err) {
         console.error('Load error:', err);
       }

@@ -327,6 +327,64 @@
   }
 }
 
+/* ---- Comment threads ---- */
+.comment-thread {
+  margin-top: var(--space-lg);
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-lg);
+}
+
+.comment-list {
+  margin-bottom: var(--space-md);
+}
+
+.comment {
+  padding: var(--space-sm) var(--space-md);
+  margin-bottom: var(--space-sm);
+  border-radius: var(--radius-sm);
+}
+
+.comment--admin {
+  background: var(--color-teal-light);
+}
+
+.comment--client {
+  background: var(--color-accent-light);
+}
+
+.comment__meta {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-xs);
+}
+
+.comment__text {
+  font-size: 0.9375rem;
+  white-space: pre-wrap;
+}
+
+.comment-empty {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.comment-form {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+}
+
+.comment-form .form-input {
+  flex: 1;
+}
+
+/* ---- Client submitted badge ---- */
+.badge--submitted {
+  background: #E8EAF6;
+  color: #283593;
+}
+
 /* ---- Auth loading ---- */
 html.auth-loading .app-layout {
   opacity: 0.3;

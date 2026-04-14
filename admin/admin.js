@@ -27,28 +27,7 @@
   // ------------------------------------------------------------------
   async function loadClients() {
     try {
-      // Load both registered users and pending invites
-      var users = await Empath.db.getClients();
-      var pendingSnap = await db.collection('pendingInvites').orderBy('createdAt', 'desc').get();
-      var pending = pendingSnap.docs.map(function (doc) {
-        var d = doc.data();
-        return {
-          id: doc.id,
-          displayName: d.displayName,
-          email: d.email,
-          status: d.status || 'pending',
-          plan: d.plan,
-          startDate: d.createdAt,
-          isPending: true
-        };
-      });
-
-      // Filter out pending invites whose email already has a registered user
-      var registeredEmails = {};
-      users.forEach(function (u) { registeredEmails[u.email] = true; });
-      pending = pending.filter(function (p) { return !registeredEmails[p.email]; });
-
-      allClients = users.concat(pending);
+      allClients = await Empath.db.getClients();
       renderClients(allClients);
     } catch (err) {
       console.error('Error loading clients:', err);
@@ -67,9 +46,8 @@
 
     clientTableBody.innerHTML = clients.map(function (c) {
       var startDate = c.startDate ? formatDate(c.startDate) : '-';
-      var nameCell = c.isPending
-        ? '<td>' + esc(c.displayName) + ' <span style="color:var(--color-text-muted); font-size:0.8125rem;">(not yet signed in)</span></td>'
-        : '<td><a class="client-table__name" href="/admin/clients/?uid=' + c.id + '">' + esc(c.displayName) + '</a></td>';
+      var pendingLabel = c.isPending ? ' <span style="color:var(--color-text-muted); font-size:0.8125rem;">(not yet signed in)</span>' : '';
+      var nameCell = '<td><a class="client-table__name" href="/admin/clients/?uid=' + c.id + '">' + esc(c.displayName) + '</a>' + pendingLabel + '</td>';
       return '<tr>' +
         nameCell +
         '<td>' + esc(c.email) + '</td>' +
@@ -136,26 +114,41 @@
     sendInviteBtn.textContent = 'Adding...';
 
     try {
-      // Create pending invite (so when client signs in, their profile is pre-filled)
+      // Create a placeholder user doc so admin can add content before client signs in.
+      // Use a temporary ID prefixed with "pending_" — will be migrated to real UID on first sign-in.
+      var placeholderId = 'pending_' + Date.now();
+      await db.collection('users').doc(placeholderId).set({
+        email: email,
+        displayName: name,
+        role: 'client',
+        status: 'active',
+        plan: plan,
+        notes: '',
+        isPending: true,
+        startDate: firebase.firestore.FieldValue.serverTimestamp(),
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      // Also create a pending invite so auth-guard can match them on first sign-in
       await db.collection('pendingInvites').add({
         email: email,
         displayName: name,
         plan: plan,
+        placeholderUid: placeholderId,
         status: 'created',
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       });
 
-      // If password provided, create their Firebase Auth account using a
-      // secondary app instance so we don't sign out the admin.
+      // If password provided, create their Firebase Auth account
       if (password) {
         var secondaryApp = firebase.apps.find(function (a) { return a.name === 'secondary'; })
           || firebase.initializeApp(firebase.app().options, 'secondary');
         var secondaryAuth = secondaryApp.auth();
 
-        var cred = await secondaryAuth.createUserWithEmailAndPassword(email, password);
+        await secondaryAuth.createUserWithEmailAndPassword(email, password);
         await secondaryAuth.signOut();
 
-        showToast('Client added with password - share it with them');
+        showToast('Client added with password — share it with them');
       } else if (shouldSendEmail) {
         await auth.sendSignInLinkToEmail(email, {
           url: window.location.origin + '/login/',
@@ -163,7 +156,7 @@
         });
         showToast('Client added and sign-in link sent to ' + email);
       } else {
-        showToast('Client added - they can sign in with Google or request a link');
+        showToast('Client added — they can sign in with Google or request a link');
       }
 
       closeInviteModal();
