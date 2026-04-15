@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Migrate Client Data - Empath Admin</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="../../empath-icon.png" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="stylesheet" href="../admin.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav" role="navigation" aria-label="Admin navigation">
+    <div class="nav__inner container">
+      <a href="/admin/" class="nav__logo" aria-label="Admin dashboard">
+        <img src="../../empath-icon.png" alt="" class="nav__logo-icon" aria-hidden="true" />
+        Empath Admin
+      </a>
+      <div class="nav__links" id="navLinks" role="menubar">
+        <a href="/admin/" class="nav__link" role="menuitem">Clients</a>
+        <button class="btn btn--outline nav__cta" id="signOutBtn">Sign Out</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="app-sidebar__section">
+        <div class="app-sidebar__label">Admin</div>
+        <a href="/admin/" class="app-sidebar__link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Clients
+        </a>
+        <a href="/admin/migrate/" class="app-sidebar__link is-active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+          Migrate Data
+        </a>
+      </div>
+    </aside>
+
+    <main class="app-content">
+      <div class="app-page-header">
+        <h1 class="app-page-header__title">Migrate Client Data</h1>
+        <p class="app-page-header__subtitle">Move all data (sessions, job analyses, resume reviews, progress) from one client to another.</p>
+      </div>
+
+      <!-- Step 1: Select clients -->
+      <div class="app-card" id="selectCard">
+        <div class="app-card__header">
+          <span class="app-card__title">1. Select Clients</span>
+        </div>
+        <div class="app-card__body">
+          <div class="form-group">
+            <label class="form-label" for="sourceClient">Source Client <span style="color:var(--color-text-muted);">(has the data)</span></label>
+            <select class="form-input" id="sourceClient">
+              <option value="">-- Select source client --</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="targetClient">Target Client <span style="color:var(--color-text-muted);">(should receive the data)</span></label>
+            <select class="form-input" id="targetClient">
+              <option value="">-- Select target client --</option>
+            </select>
+          </div>
+          <button class="btn btn--accent" id="previewBtn" disabled>Preview Migration</button>
+        </div>
+      </div>
+
+      <!-- Step 2: Preview -->
+      <div class="app-card" id="previewCard" hidden>
+        <div class="app-card__header">
+          <span class="app-card__title">2. Preview</span>
+        </div>
+        <div class="app-card__body" id="previewBody">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Step 3: Confirm -->
+      <div class="app-card" id="confirmCard" hidden>
+        <div class="app-card__header">
+          <span class="app-card__title">3. Confirm Migration</span>
+        </div>
+        <div class="app-card__body">
+          <div class="form-group" style="display:flex; align-items:center; gap:var(--space-sm);">
+            <input type="checkbox" id="deleteSource" />
+            <label class="form-label" for="deleteSource" style="margin:0;">Delete source client after migration</label>
+          </div>
+          <p style="font-size:0.875rem; color:var(--color-text-muted); margin-bottom:var(--space-lg);">
+            This will copy all data from the source to the target. If items with the same ID already exist on the target, they will be overwritten.
+          </p>
+          <div style="display:flex; gap:var(--space-md);">
+            <button class="btn btn--accent" id="migrateBtn">Migrate Data</button>
+            <button class="btn btn--outline" id="cancelBtn">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress / result -->
+      <div class="app-card" id="progressCard" hidden>
+        <div class="app-card__header">
+          <span class="app-card__title" id="progressTitle">Migrating...</span>
+        </div>
+        <div class="app-card__body" id="progressBody">
+          <p id="progressText">Starting migration...</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="../../firebase/firebase-config.js"></script>
+  <script src="../../firebase/auth-guard.js"></script>
+  <script src="../../firebase/firestore-helpers.js"></script>
+  <script src="migrate.js"></script>
+</body>
+</html>
