@@ -290,6 +290,91 @@ body {
   margin-bottom: 1.5rem;
 }
 
+/* ── Recent resumes (in drop zone) ──────────────────────────────────────── */
+
+.recent {
+  margin-top: 2rem;
+  text-align: left;
+  width: 100%;
+  max-width: 360px;
+}
+
+.recent__label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.recent__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.recent__item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+}
+
+.recent__item:hover {
+  background: var(--accent-light);
+  border-color: var(--accent);
+}
+
+.recent__item-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.recent__item-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.recent__item-name {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recent__item-meta {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.recent__item-delete {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.recent__item-delete:hover {
+  background: #fff0f0;
+  color: #c0392b;
+}
+
 /* ── Pages container ────────────────────────────────────────────────────── */
 
 .pages-container {
@@ -337,6 +422,75 @@ body {
   position: absolute !important;
   top: 0 !important;
   left: 0 !important;
+}
+
+/* ── Floating note editor ───────────────────────────────────────────────── */
+
+.note-editor {
+  position: fixed;
+  width: 260px;
+  background: #fffbe6;
+  border: 1px solid #f3d96b;
+  border-radius: 6px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+  padding: 0.5rem;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.note-editor__textarea {
+  width: 100%;
+  min-height: 80px;
+  resize: vertical;
+  border: 1px solid #efe1a1;
+  border-radius: 4px;
+  padding: 0.4rem 0.5rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  background: #fff;
+  color: var(--text);
+  outline: none;
+}
+
+.note-editor__textarea:focus {
+  border-color: var(--accent);
+}
+
+.note-editor__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.4rem;
+}
+
+.note-editor__btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.3rem 0.6rem;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+
+.note-editor__btn:hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--text);
+}
+
+.note-editor__btn--primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.note-editor__btn--primary:hover {
+  background: #b05a24;
+  border-color: #b05a24;
+  color: #fff;
 }
 
 /* ── Toast ──────────────────────────────────────────────────────────────── */

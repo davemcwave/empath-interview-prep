@@ -251,6 +251,98 @@
 
 
   /* ============================================================
+     NEWSLETTER POPUP (home page only)
+     Triggers once per visitor on the home page. Subscribing or
+     dismissing writes a flag to localStorage so the popup does
+     not return on future visits.
+
+     Storage key: `empath_newsletter_choice`
+       value `subscribed` - form was submitted
+       value `dismissed`  - user closed without subscribing
+     If the key is present (any value), the popup is suppressed.
+  ============================================================ */
+  const newsletterPopup = document.getElementById('newsletterPopup');
+
+  if (newsletterPopup) {
+    const STORAGE_KEY = 'empath_newsletter_choice';
+
+    let alreadyChosen = false;
+    try {
+      alreadyChosen = !!localStorage.getItem(STORAGE_KEY);
+    } catch (_) {
+      // localStorage unavailable (private mode etc.); fall through and show once per session.
+    }
+
+    if (!alreadyChosen) {
+      const popupForm   = document.getElementById('newsletterPopupForm');
+      const popupEmail  = newsletterPopup.querySelector('.newsletter-popup__input');
+      const popupClose  = newsletterPopup.querySelectorAll('[data-newsletter-close]');
+      let popupOpenedAt = 0;
+      let popupShown    = false;
+
+      function setNewsletterChoice(value) {
+        try { localStorage.setItem(STORAGE_KEY, value); } catch (_) {}
+      }
+
+      function openNewsletterPopup() {
+        if (popupShown) return;
+        popupShown = true;
+        newsletterPopup.classList.add('is-open');
+        newsletterPopup.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        popupOpenedAt = Date.now();
+        setTimeout(function () {
+          if (popupEmail) popupEmail.focus();
+        }, 50);
+      }
+
+      function closeNewsletterPopup(reason) {
+        newsletterPopup.classList.remove('is-open');
+        newsletterPopup.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        // Guard against accidental backdrop clicks in the first 350ms.
+        if (reason === 'subscribed' || (Date.now() - popupOpenedAt) > 350) {
+          setNewsletterChoice(reason || 'dismissed');
+        } else {
+          setNewsletterChoice('dismissed');
+        }
+      }
+
+      popupClose.forEach(function (el) {
+        el.addEventListener('click', function () { closeNewsletterPopup('dismissed'); });
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && newsletterPopup.classList.contains('is-open')) {
+          closeNewsletterPopup('dismissed');
+        }
+      });
+
+      if (popupForm) {
+        // Set the flag before the form's redirect navigates away.
+        popupForm.addEventListener('submit', function () {
+          setNewsletterChoice('subscribed');
+        });
+      }
+
+      // Triggers: 20s timeout OR scroll past 40% of the page, whichever first.
+      const popupTimer = setTimeout(openNewsletterPopup, 20000);
+
+      function onPopupScroll() {
+        const scrolled  = window.scrollY + window.innerHeight;
+        const docHeight = document.documentElement.scrollHeight;
+        if (docHeight > 0 && scrolled / docHeight >= 0.4) {
+          clearTimeout(popupTimer);
+          window.removeEventListener('scroll', onPopupScroll);
+          openNewsletterPopup();
+        }
+      }
+      window.addEventListener('scroll', onPopupScroll, { passive: true });
+    }
+  }
+
+
+  /* ============================================================
      INITIALIZE
      Run on DOMContentLoaded to ensure all elements exist.
   ============================================================ */
