@@ -731,26 +731,6 @@
     </div>
   </footer>
 
-  <!-- ============================================================
-       NEWSLETTER SUBSCRIBE POPUP (home page only)
-       Behavior + persistence handled in script.js via localStorage.
-  ============================================================ -->
-  <div class="newsletter-popup" id="newsletterPopup" role="dialog" aria-modal="true" aria-labelledby="newsletterPopupHeading" aria-hidden="true">
-    <div class="newsletter-popup__backdrop" data-newsletter-close></div>
-    <div class="newsletter-popup__panel" role="document">
-      <button type="button" class="newsletter-popup__close" aria-label="Close" data-newsletter-close>&times;</button>
-      <h2 class="newsletter-popup__heading" id="newsletterPopupHeading">Notes from real interview prep sessions.</h2>
-      <p class="newsletter-popup__desc">A short post when I see a pattern worth writing up. Senior tech job market, interview prep, and what's actually working. No spam.</p>
-      <form class="newsletter-popup__form" action="https://formspree.io/f/xykvedez" method="POST" id="newsletterPopupForm">
-        <input type="hidden" name="_next" value="https://www.empathinterviews.com/thank-you-for-subscribing/" />
-        <input type="hidden" name="_subject" value="New blog subscriber (home popup)" />
-        <input type="email" name="email" placeholder="your@email.com" required class="newsletter-popup__input" aria-label="Email address" />
-        <button type="submit" class="newsletter-popup__btn">Subscribe</button>
-      </form>
-      <button type="button" class="newsletter-popup__dismiss" data-newsletter-close>No thanks</button>
-    </div>
-  </div>
-
   <script src="script.js"></script>
 </body>
 </html>

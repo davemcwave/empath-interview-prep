@@ -1,3 +1,7 @@
 # Working notes, not for the public site
 career-resources.md
 reddit-strategy.md
+
+# Local Reddit digest output. NEVER commit. The repo doubles as the public
+# GitHub Pages site, so anything at /digest/ would leak outreach targets.
+digest/
