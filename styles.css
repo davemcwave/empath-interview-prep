@@ -61,6 +61,12 @@
 
   /* Nav */
   --nav-height: 68px;
+
+  /* Film grain, applied as a background layer so it textures the ground
+     colour and never sits over text. Strength is baked into the image
+     (feFuncA intercept); regenerate to change it. */
+  --grain: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27200%27%20height%3D%27200%27%3E%3Cfilter%20id%3D%27n%27%20x%3D%270%27%20y%3D%270%27%20width%3D%27100%25%27%20height%3D%27100%25%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.8%27%20numOctaves%3D%274%27%20stitchTiles%3D%27stitch%27%2F%3E%3CfeColorMatrix%20type%3D%27saturate%27%20values%3D%270%27%2F%3E%3CfeComponentTransfer%3E%3CfeFuncR%20type%3D%27linear%27%20slope%3D%272%27%20intercept%3D%27-0.5%27%2F%3E%3CfeFuncG%20type%3D%27linear%27%20slope%3D%272%27%20intercept%3D%27-0.5%27%2F%3E%3CfeFuncB%20type%3D%27linear%27%20slope%3D%272%27%20intercept%3D%27-0.5%27%2F%3E%3CfeFuncA%20type%3D%27linear%27%20slope%3D%270%27%20intercept%3D%270.085%27%2F%3E%3C%2FfeComponentTransfer%3E%3C%2Ffilter%3E%3Crect%20width%3D%27200%27%20height%3D%27200%27%20filter%3D%27url%28%23n%29%27%2F%3E%3C%2Fsvg%3E");
+  --grain-tile: 200px 200px;
 }
 
 /* ============================================================
@@ -84,22 +90,13 @@ body {
   line-height: 1.55;
   color: var(--color-text);
   background-color: var(--color-bg);
+  background-image: var(--grain);
+  background-size: var(--grain-tile);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
 
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 9999;
-  opacity: 0.035;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  background-size: 300px 300px;
-}
 
 img, svg {
   display: block;
@@ -563,6 +560,8 @@ h1, h2, h3, h4 {
 .pillars {
   padding-block: var(--space-5xl);
   background-color: var(--color-bg);
+  background-image: var(--grain);
+  background-size: var(--grain-tile);
 }
 
 .pillars__grid {
@@ -617,6 +616,8 @@ h1, h2, h3, h4 {
 .about {
   padding-block: var(--space-5xl);
   background-color: var(--color-teal-light);
+  background-image: var(--grain);
+  background-size: var(--grain-tile);
   border-top: 1px solid var(--color-border);
   border-bottom: 1px solid var(--color-border);
 }
@@ -731,6 +732,8 @@ h1, h2, h3, h4 {
 .services {
   padding-block: var(--space-5xl);
   background-color: var(--color-bg);
+  background-image: var(--grain);
+  background-size: var(--grain-tile);
 }
 
 /* Timeline */
@@ -1071,6 +1074,11 @@ h1, h2, h3, h4 {
 .how-it-works {
   padding-block: var(--space-5xl);
   background-color: var(--color-teal);
+  /* Tiled dot grid - a repeating 1px dot, not a gradient wash. Cell is 24px,
+     which is a step on the 4px spacing scale, so it lines up with the layout. */
+  background-image: radial-gradient(rgba(255, 255, 255, 0.11) 1px, transparent 1px),
+                    var(--grain);
+  background-size: 24px 24px, var(--grain-tile);
 }
 
 .how-it-works .section-label {
@@ -1128,6 +1136,8 @@ h1, h2, h3, h4 {
 .pricing {
   padding-block: var(--space-5xl);
   background-color: var(--color-bg);
+  background-image: var(--grain);
+  background-size: var(--grain-tile);
 }
 
 .pricing__cards {
@@ -1382,6 +1392,8 @@ h1, h2, h3, h4 {
 .faq {
   padding-block: var(--space-4xl);
   background: var(--color-bg);
+  background-image: var(--grain);
+  background-size: var(--grain-tile);
 }
 
 .faq__inner {
@@ -1451,6 +1463,8 @@ h1, h2, h3, h4 {
 .book-cta {
   padding-block: var(--space-5xl);
   background-color: var(--color-bg-alt);
+  background-image: var(--grain);
+  background-size: var(--grain-tile);
   border-top: 1px solid var(--color-rule);
   text-align: center;
 }
@@ -1501,6 +1515,8 @@ h1, h2, h3, h4 {
   padding-top: calc(var(--nav-height) + var(--space-4xl));
   padding-bottom: var(--space-5xl);
   background-color: var(--color-bg);
+  background-image: var(--grain);
+  background-size: var(--grain-tile);
 }
 
 .review-form-container {
@@ -1649,6 +1665,8 @@ h1, h2, h3, h4 {
   padding-top: calc(var(--nav-height) + var(--space-4xl));
   padding-bottom: var(--space-5xl);
   background-color: var(--color-bg);
+  background-image: var(--grain);
+  background-size: var(--grain-tile);
 }
 
 .thankyou-container {
@@ -1754,6 +1772,8 @@ h1, h2, h3, h4 {
 .proof {
   padding-block: var(--space-5xl);
   background-color: var(--color-bg-alt);
+  background-image: var(--grain);
+  background-size: var(--grain-tile);
   border-top: 1px solid var(--color-rule);
   border-bottom: 1px solid var(--color-rule);
 }
@@ -1839,6 +1859,8 @@ h1, h2, h3, h4 {
 .doc-section {
   padding-block: var(--space-4xl) var(--space-5xl);
   background-color: var(--color-bg-alt);
+  background-image: var(--grain);
+  background-size: var(--grain-tile);
 }
 
 .doc-container {
@@ -1906,6 +1928,9 @@ h1, h2, h3, h4 {
 .footer {
   background-color: var(--color-text);
   color: rgba(255, 255, 255, 0.85);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+                    var(--grain);
+  background-size: 24px 24px, var(--grain-tile);
 }
 
 .footer__inner {
