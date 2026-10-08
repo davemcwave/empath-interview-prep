@@ -1,7 +1,14 @@
 /**
  * Auth Guard
  *
- * Include on every portal and admin page. Checks auth state
+ * NOTE: The client portal and the /login/ page were both removed.
+ * Nothing on the site can sign a user in any more, so every admin/
+ * page that loads this guard will redirect to a non-existent /login/
+ * and is effectively dead code, kept for reference only.
+ * To bring the admin panel back, restore the login page with:
+ *   git checkout HEAD -- login/
+ *
+ * Include on every admin page. Checks auth state
  * and redirects unauthenticated users to /login/.
  * For admin pages, also verifies the user has role "admin".
  *
@@ -105,7 +112,8 @@
     const isAdmin = userDoc.role === 'admin';
 
     if (isAdminPage && !isAdmin) {
-      window.location.replace('/portal/');
+      // Client portal removed - non-admins have nowhere to land here.
+      auth.signOut().then(function () { window.location.replace('/'); });
       return;
     }
 

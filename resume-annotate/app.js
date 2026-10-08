@@ -420,7 +420,7 @@ function buildViewerHTML(pdfBase64, annotationsJson, name) {
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>${escHtml(name)} - Resume Review · Empath Interview Prep</title>
+<title>${escHtml(name)} - Resume Review · Empath Career Services</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
 <style>
@@ -442,7 +442,7 @@ body{background:#f0ece4;font-family:'DM Sans',sans-serif;color:#1a1a1a}
 </head>
 <body>
 <div class="header">
-  <div class="header__brand"><span class="header__mark">✦</span>Empath Interview Prep</div>
+  <div class="header__brand"><span class="header__mark">✦</span>Empath Career Services</div>
   <div class="header__divider"></div>
   <div class="header__name">Resume Review - ${escHtml(name)}</div>
   <div class="header__note">Annotated by David Dalisay</div>

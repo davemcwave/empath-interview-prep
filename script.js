@@ -1,5 +1,5 @@
 /**
- * Empath Interview Prep - script.js
+ * Empath Career Services - script.js
  * Pure vanilla JS. No dependencies.
  * GitHub Pages compatible.
  */
@@ -257,4 +257,39 @@
   // Already using DOMContentLoaded via IIFE + script at bottom of body.
   // Nothing else needed here - all selectors are safe.
 
+})();
+
+/* ============================================================
+   FORM SUBMIT STATE
+   Both forms post to an external handler, so without this the
+   button looks inert while the request is in flight.
+============================================================ */
+(function () {
+  /* Registered on load, so this listener runs AFTER any page-level submit
+     handler. resume-intake cancels invalid submits, and if we ran first the
+     button would stick on "Sending..." for a submission that never happened. */
+  window.addEventListener('load', function () {
+    Array.prototype.forEach.call(document.querySelectorAll('form'), function (form) {
+      form.addEventListener('submit', function (e) {
+        if (e.defaultPrevented) return;
+        if (form.checkValidity && !form.checkValidity()) return;
+        var btn = form.querySelector('[type="submit"]');
+        if (!btn || btn.classList.contains('is-loading')) return;
+        btn.dataset.label = btn.textContent.trim();
+        btn.textContent = 'Sending\u2026';
+        btn.classList.add('is-loading');
+        btn.setAttribute('aria-busy', 'true');
+      });
+    });
+  });
+
+  // Restore the button if the user returns via the back/forward cache
+  window.addEventListener('pageshow', function () {
+    Array.prototype.forEach.call(
+      document.querySelectorAll('.btn.is-loading'), function (btn) {
+        if (btn.dataset.label) btn.textContent = btn.dataset.label;
+        btn.classList.remove('is-loading');
+        btn.removeAttribute('aria-busy');
+      });
+  });
 })();
