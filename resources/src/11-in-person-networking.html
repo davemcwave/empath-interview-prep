@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>In-Person Networking - Empath Interview Prep</title>
+<link rel="stylesheet" href="_base.css">
+<style>
+  /* Competition tiers */
+  .tiers {
+    margin-top: 0.16in;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.18in;
+  }
+  .tier {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.18in 0.2in 0.18in;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+  }
+  .tier-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 0.08in;
+  }
+  .tier-label {
+    font-size: 9pt;
+    letter-spacing: 0.14em;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .tier-applicants {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 22pt;
+    line-height: 1;
+    color: var(--navy-dark);
+  }
+  .big   { border-top: 5px solid var(--rose); }
+  .mid   { border-top: 5px solid var(--orange); }
+  .small { border-top: 5px solid var(--green); }
+  .big .tier-label   { color: var(--rose); }
+  .mid .tier-label   { color: var(--orange); }
+  .small .tier-label { color: var(--green); }
+
+  .tier-name {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 14pt;
+    color: var(--navy-dark);
+    margin-bottom: 0.04in;
+    line-height: 1.1;
+  }
+  .tier-sub { font-size: 9pt; color: var(--text-muted); margin-bottom: 0.12in; line-height: 1.35; }
+  .tier-stat {
+    font-size: 9.5pt;
+    margin-bottom: 0.05in;
+  }
+  .tier-stat b { color: var(--navy-dark); }
+  .tier-takeaway {
+    margin-top: auto;
+    padding-top: 0.1in;
+    border-top: 1px dashed var(--border);
+    font-size: 9.5pt;
+    font-style: italic;
+    line-height: 1.35;
+  }
+  .big .tier-takeaway   { color: #8a3530; }
+  .mid .tier-takeaway   { color: #6b4321; }
+  .small .tier-takeaway { color: #224537; }
+
+  .section {
+    margin-top: 0.28in;
+  }
+  .section-head {
+    font-size: 9.5pt;
+    letter-spacing: 0.14em;
+    color: var(--navy-dark);
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 0.14in;
+  }
+
+  /* Where to go grid */
+  .venues {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.18in 0.32in;
+  }
+  .venue {
+    display: grid;
+    grid-template-columns: 0.32in 1fr;
+    gap: 0.08in;
+    font-size: 10pt;
+    line-height: 1.4;
+  }
+  .venue-num {
+    font-family: 'DM Serif Display', Georgia, serif;
+    color: var(--orange);
+    font-size: 18pt;
+    line-height: 1;
+    padding-top: 0.02in;
+  }
+  .venue-name {
+    font-weight: 700;
+    color: var(--navy-dark);
+    margin-bottom: 0.03in;
+  }
+  .venue-detail { color: var(--text-muted); font-size: 9.5pt; line-height: 1.4; }
+
+  /* Tactics row */
+  .tactics {
+    margin-top: 0.26in;
+    background: var(--navy-tint);
+    border-radius: 10px;
+    padding: 0.2in 0.24in;
+  }
+  .tactics-head {
+    font-size: 9.5pt;
+    letter-spacing: 0.14em;
+    color: var(--navy-dark);
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 0.12in;
+  }
+  .tactics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.08in 0.3in;
+    font-size: 10pt;
+    line-height: 1.4;
+  }
+  .tactics-grid div::before {
+    content: "→ ";
+    color: var(--orange);
+    font-weight: 700;
+  }
+
+  /* Competition math intro stripe */
+  .math-strip {
+    margin-top: 0.1in;
+    background: var(--orange-tint);
+    border-left: 5px solid var(--orange);
+    border-radius: 6px;
+    padding: 0.16in 0.22in;
+  }
+  .math-strip-head {
+    font-size: 9pt;
+    letter-spacing: 0.14em;
+    font-weight: 700;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-bottom: 0.06in;
+  }
+  .math-strip p {
+    font-size: 10.5pt;
+    line-height: 1.45;
+    color: #4a2f17;
+  }
+
+  /* Page 2 helpers */
+  .page2-intro { margin-bottom: 0.18in; }
+
+  /* Follow-up callout */
+  .followup {
+    margin-top: 0.28in;
+    background: var(--green-tint);
+    border-radius: 10px;
+    padding: 0.2in 0.24in;
+    border-left: 5px solid var(--green);
+  }
+  .followup-head {
+    font-size: 9.5pt;
+    letter-spacing: 0.14em;
+    color: var(--green);
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 0.1in;
+  }
+  .followup p {
+    font-size: 10pt;
+    line-height: 1.5;
+    color: #224537;
+  }
+  .followup .example {
+    margin-top: 0.1in;
+    background: rgba(255,255,255,0.6);
+    border-radius: 6px;
+    padding: 0.12in 0.16in;
+    font-style: italic;
+    color: #224537;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============== PAGE 1: the why ============== -->
+<div class="page">
+  <header class="page-header">
+    <div class="brand">Empath Interview Prep</div>
+    <div class="header-right">Resources for the 2026 tech job market</div>
+  </header>
+
+  <div class="eyebrow">RESOURCE 11 · JOB SEARCH</div>
+  <h1 class="title">Where To Network In Person</h1>
+  <p class="subtitle">The online funnel is brutal because everyone uses the same one. Smaller rooms, with smaller companies, are where leverage hides.</p>
+
+  <div class="math-strip">
+    <div class="math-strip-head">THE MATH OF COMPETITION</div>
+    <p>Every senior IC is firing the same résumé at the same ten brand names. Big tech reqs get 1,000+ applicants; a Series B might get 40. Your odds change by an order of magnitude based on which room you walk into.</p>
+  </div>
+
+  <div class="tiers">
+    <div class="tier big">
+      <div class="tier-head">
+        <div class="tier-label">BIG TECH</div>
+        <div class="tier-applicants">1,000+</div>
+      </div>
+      <div class="tier-name">FAANG & the brand names</div>
+      <div class="tier-sub">Meta, Google, Stripe, OpenAI, the usual suspects.</div>
+      <div class="tier-stat"><b>Per req:</b> 1,000-5,000 applicants</div>
+      <div class="tier-stat"><b>Screened by:</b> ATS, recruiter, panel</div>
+      <div class="tier-stat"><b>Referral helps:</b> a little</div>
+      <div class="tier-takeaway">Inbound rarely works. Don't make this your whole pipeline.</div>
+    </div>
+    <div class="tier mid">
+      <div class="tier-head">
+        <div class="tier-label">MID-SIZE</div>
+        <div class="tier-applicants">100-300</div>
+      </div>
+      <div class="tier-name">Series C through pre-IPO</div>
+      <div class="tier-sub">Profitable scale-ups, recognized but not famous.</div>
+      <div class="tier-stat"><b>Per req:</b> 100-300 applicants</div>
+      <div class="tier-stat"><b>Screened by:</b> recruiter + hiring manager</div>
+      <div class="tier-stat"><b>Referral helps:</b> a lot</div>
+      <div class="tier-takeaway">A warm intro often jumps the queue entirely.</div>
+    </div>
+    <div class="tier small">
+      <div class="tier-head">
+        <div class="tier-label">STARTUP</div>
+        <div class="tier-applicants">20-80</div>
+      </div>
+      <div class="tier-name">Seed through Series B</div>
+      <div class="tier-sub">Names you have to explain at the dinner table.</div>
+      <div class="tier-stat"><b>Per req:</b> 20-80 applicants</div>
+      <div class="tier-stat"><b>Screened by:</b> founder or hiring manager</div>
+      <div class="tier-stat"><b>Referral helps:</b> often decides it</div>
+      <div class="tier-takeaway">A 20-minute conversation can put you at the top.</div>
+    </div>
+  </div>
+
+  <div class="tactics">
+    <div class="tactics-head">Working the room</div>
+    <div class="tactics-grid">
+      <div>Show up alone. You'll talk to twice as many people.</div>
+      <div>Skip the speaker. The lobby is where the work happens.</div>
+      <div>Ask "what are you working on?" not "are you hiring?"</div>
+      <div>Leave with two names and a reason to follow up.</div>
+      <div>Send the follow-up within 24 hours, by name, with one specific.</div>
+      <div>Go back. The third time you appear, you're a regular.</div>
+    </div>
+  </div>
+
+  <footer class="page-footer">
+    <div class="left">One of a series for tech ICs in the 2026 market.</div>
+    <div class="right">empathinterviews.com</div>
+  </footer>
+</div>
+
+<!-- ============== PAGE 2: where to go ============== -->
+<div class="page">
+  <header class="page-header">
+    <div class="brand">Empath Interview Prep</div>
+    <div class="header-right">Resources for the 2026 tech job market</div>
+  </header>
+
+  <div class="eyebrow">RESOURCE 11 · JOB SEARCH · VENUES</div>
+  <h1 class="title" style="font-size: 26pt;">Where to actually show up</h1>
+  <p class="subtitle page2-intro">Eight rooms where mid-size and startup teams are actively hiring, in order of how fast they pay off.</p>
+
+  <div class="venues">
+    <div class="venue">
+      <div class="venue-num">1</div>
+      <div>
+        <div class="venue-name">Tech meetups on Meetup, lu.ma, Eventbrite</div>
+        <div class="venue-detail">Filter by stack or domain. RSVPs over 30 usually means it's a real event with a real crowd. Stay for the second beer.</div>
+      </div>
+    </div>
+    <div class="venue">
+      <div class="venue-num">2</div>
+      <div>
+        <div class="venue-name">Demo nights and startup showcases</div>
+        <div class="venue-detail">Founders pitch on stage; engineers and EMs in the audience are often hiring. Talk to the second-row crowd, not the presenters.</div>
+      </div>
+    </div>
+    <div class="venue">
+      <div class="venue-num">3</div>
+      <div>
+        <div class="venue-name">Regional conferences, not just the big names</div>
+        <div class="venue-detail">SREcon, RailsConf, PyCon regional, AI Tinkerers chapters, local devops days. Smaller events; more real conversations.</div>
+      </div>
+    </div>
+    <div class="venue">
+      <div class="venue-num">4</div>
+      <div>
+        <div class="venue-name">Hackathons and build weekends</div>
+        <div class="venue-detail">You leave with a working demo and three people who saw you ship. Best signal-to-noise of any networking format.</div>
+      </div>
+    </div>
+    <div class="venue">
+      <div class="venue-num">5</div>
+      <div>
+        <div class="venue-name">Coworking spaces that host member events</div>
+        <div class="venue-detail">WeWork, Industrious, local indie spaces. Day passes work. Show up to the Thursday happy hour, you'll meet five founders.</div>
+      </div>
+    </div>
+    <div class="venue">
+      <div class="venue-num">6</div>
+      <div>
+        <div class="venue-name">University alumni nights and career mixers</div>
+        <div class="venue-detail">Even a decade-old alumni network opens doors fast. Most schools have a quiet local chapter you can crash.</div>
+      </div>
+    </div>
+    <div class="venue">
+      <div class="venue-num">7</div>
+      <div>
+        <div class="venue-name">Vendor and dev-tool launches</div>
+        <div class="venue-detail">AWS, GCP, Vercel, Linear meetups. Sponsors and speakers are almost always hiring; check their careers page before you go.</div>
+      </div>
+    </div>
+    <div class="venue">
+      <div class="venue-num">8</div>
+      <div>
+        <div class="venue-name">Invite-only dinners and IRL Slack/Discord meetups</div>
+        <div class="venue-detail">Ask one well-connected friend. These compound faster than anything else; the same 15 people show up to the next one.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="followup">
+    <div class="followup-head">THE FOLLOW-UP THAT WORKS</div>
+    <p>The room only matters if you write the email. Within 24 hours, by name, with one specific thing from the conversation. Ask for one small thing: a 20-minute call, an intro, a doc to read. The smaller the ask, the higher the yes rate.</p>
+    <div class="example">"Hi Maria, great to meet you at the lu.ma meetup. You mentioned your team is rebuilding the ingest pipeline. I led a similar migration last year. Could I grab 20 minutes next week to compare notes?"</div>
+  </div>
+
+  <footer class="page-footer">
+    <div class="left">One of a series for tech ICs in the 2026 market.</div>
+    <div class="right">empathinterviews.com</div>
+  </footer>
+</div>
+
+</body>
+</html>

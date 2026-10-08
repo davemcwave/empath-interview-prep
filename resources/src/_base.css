@@ -1,0 +1,125 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Serif+Display:ital@0;1&display=swap');
+
+:root {
+  --navy: #1D4E5F;
+  --navy-dark: #16384a;
+  --navy-tint: #E3EDF0;
+  --navy-tint-2: #d1dfe4;
+  --orange: #B5713A;
+  --orange-tint: #F2E8DD;
+  --orange-tint-2: #ead7c2;
+  --green: #3D7460;
+  --green-tint: #E1ECE6;
+  --rose: #C75A4D;
+  --rose-tint: #fbeae7;
+  --text: #1C1C1E;
+  --text-muted: #5C5C6B;
+  --border: #E8E3DD;
+}
+
+@page {
+  size: letter;
+  margin: 0;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  color: var(--text);
+  background: #fff;
+  font-size: 11pt;
+  line-height: 1.45;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.page {
+  width: 8.5in;
+  height: 10.9in;
+  padding: 0.45in 0.6in 0.25in;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.page + .page { page-break-before: always; }
+
+/* Header */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 0.12in;
+  border-bottom: 1.5px solid var(--orange);
+  margin-bottom: 0.32in;
+}
+.brand {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 18pt;
+  color: var(--navy-dark);
+  letter-spacing: -0.01em;
+}
+.header-right {
+  font-size: 9.5pt;
+  color: var(--text-muted);
+}
+
+/* Eyebrow + Title */
+.eyebrow {
+  font-size: 9pt;
+  letter-spacing: 0.14em;
+  color: var(--orange);
+  font-weight: 600;
+  margin-bottom: 0.08in;
+}
+.title {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 32pt;
+  color: var(--navy-dark);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.14in;
+}
+.subtitle {
+  font-size: 12pt;
+  color: var(--navy);
+  max-width: 6.5in;
+  line-height: 1.4;
+}
+
+/* Spacer pushes content down to match other resources */
+.lead-gap { height: 0.45in; }
+
+/* Footer */
+.page-footer {
+  margin-top: auto;
+  padding-top: 0.08in;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  font-size: 8.5pt;
+}
+.page-footer .left { color: var(--text-muted); }
+.page-footer .right { color: var(--orange); font-weight: 500; }
+
+/* Generic helpers */
+.muted { color: var(--text-muted); }
+.bold { font-weight: 600; }
+.italic { font-style: italic; }
+.eyebrow-sm {
+  font-size: 9pt;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* Section heading style used inside content blocks */
+.section-heading {
+  font-size: 9.5pt;
+  letter-spacing: 0.14em;
+  color: var(--navy-dark);
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 0.12in;
+}

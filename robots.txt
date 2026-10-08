@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /portal/
+Disallow: /login/
+
+Sitemap: https://www.empathinterviews.com/sitemap.xml

@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Why This Role - Empath Interview Prep</title>
+<link rel="stylesheet" href="_base.css">
+<style>
+  .pillars {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.22in;
+    margin-top: 0.1in;
+  }
+  .pillar {
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 0.22in 0.2in 0.22in;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+  }
+  .pillar.company { border-top: 6px solid var(--navy); }
+  .pillar.role    { border-top: 6px solid var(--orange); }
+  .pillar.now     { border-top: 6px solid var(--green); }
+
+  .pillar-label {
+    font-size: 9pt;
+    letter-spacing: 0.14em;
+    font-weight: 700;
+    margin-bottom: 0.04in;
+  }
+  .company .pillar-label { color: var(--navy); }
+  .role .pillar-label    { color: var(--orange); }
+  .now .pillar-label     { color: var(--green); }
+
+  .pillar-title {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 18pt;
+    line-height: 1.05;
+    color: var(--navy-dark);
+    margin-bottom: 0.12in;
+  }
+  .pillar-sub {
+    font-size: 10pt;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 0.18in;
+    line-height: 1.4;
+  }
+
+  .research-label {
+    font-size: 8.5pt;
+    letter-spacing: 0.14em;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 0.08in;
+  }
+  .research-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 0.18in 0;
+  }
+  .research-list li {
+    font-size: 10pt;
+    padding: 0.05in 0 0.05in 0.18in;
+    position: relative;
+    line-height: 1.35;
+  }
+  .research-list li::before {
+    content: "›";
+    position: absolute;
+    left: 0;
+    color: var(--orange);
+    font-weight: 700;
+    font-size: 11pt;
+    top: 0.04in;
+  }
+
+  .sample {
+    margin-top: auto;
+    border-radius: 10px;
+    padding: 0.14in 0.16in;
+    font-size: 9.5pt;
+    line-height: 1.4;
+  }
+  .company .sample { background: var(--navy-tint); color: var(--navy-dark); }
+  .role .sample    { background: var(--orange-tint); color: #6b4321; }
+  .now .sample     { background: var(--green-tint); color: #224537; }
+
+  .sample-label {
+    font-size: 8.5pt;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 0.05in;
+    opacity: 0.75;
+  }
+  .sample-quote { font-style: italic; }
+
+  .fumbles {
+    margin-top: 0.3in;
+    background: var(--rose-tint);
+    border-left: 4px solid var(--rose);
+    border-radius: 6px;
+    padding: 0.18in 0.22in;
+  }
+  .fumbles-label {
+    font-size: 9pt;
+    letter-spacing: 0.14em;
+    font-weight: 700;
+    color: var(--rose);
+    text-transform: uppercase;
+    margin-bottom: 0.1in;
+  }
+  .fumbles-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.04in 0.3in;
+    font-size: 9.5pt;
+    color: #6e2e25;
+  }
+  .fumbles-grid div::before {
+    content: "✕  ";
+    color: var(--rose);
+    font-weight: 700;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="page-header">
+    <div class="brand">Empath Interview Prep</div>
+    <div class="header-right">Resources for the 2026 tech job market</div>
+  </header>
+
+  <div class="eyebrow">RESOURCE 09 · INTERVIEW</div>
+  <h1 class="title">The Why This Role Framework</h1>
+  <p class="subtitle">Three separate questions, each with its own research. Answer them one at a time and you stop sounding like every other candidate.</p>
+
+  <div class="pillars">
+    <div class="pillar company">
+      <div class="pillar-label">WHY THIS COMPANY</div>
+      <div class="pillar-title">Research the company</div>
+      <div class="pillar-sub">What's actually happening here, not what the careers page says.</div>
+      <div class="research-label">Where to look</div>
+      <ul class="research-list">
+        <li>Last 2 earnings calls or funding announcements</li>
+        <li>The CEO's recent posts and podcast interviews</li>
+        <li>Their engineering or product blog</li>
+        <li>Glassdoor and Blind, but only for the patterns</li>
+      </ul>
+      <div class="sample">
+        <div class="sample-label">Lands when…</div>
+        <div class="sample-quote">"You just shifted from X to Y, and that's the kind of bet I want to be part of building."</div>
+      </div>
+    </div>
+
+    <div class="pillar role">
+      <div class="pillar-label">WHY THIS ROLE</div>
+      <div class="pillar-title">Research the role</div>
+      <div class="pillar-sub">The actual work, the team, the surface area you'd own.</div>
+      <div class="research-label">Where to look</div>
+      <ul class="research-list">
+        <li>The JD, read twice; the top 3 things they need</li>
+        <li>The hiring manager's LinkedIn and recent posts</li>
+        <li>The team's repos, talks, or shipped features</li>
+        <li>The recruiter screen, mined for hints on priorities</li>
+      </ul>
+      <div class="sample">
+        <div class="sample-label">Lands when…</div>
+        <div class="sample-quote">"Owning the migration off the legacy pipeline is exactly the kind of work I want my next step to be."</div>
+      </div>
+    </div>
+
+    <div class="pillar now">
+      <div class="pillar-label">WHY NOW</div>
+      <div class="pillar-title">Research yourself</div>
+      <div class="pillar-sub">Your timing and career arc. Why this, why now, why not next year.</div>
+      <div class="research-label">Where to look</div>
+      <ul class="research-list">
+        <li>What you've outgrown in your current role</li>
+        <li>The skill or scope you're reaching for next</li>
+        <li>What changed recently (team, scope, market)</li>
+        <li>Why this opportunity beats staying put</li>
+      </ul>
+      <div class="sample">
+        <div class="sample-label">Lands when…</div>
+        <div class="sample-quote">"I've spent three years going deep on infra; I'm ready to apply it to a product surface with real users."</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fumbles">
+    <div class="fumbles-label">COMMON FUMBLES</div>
+    <div class="fumbles-grid">
+      <div>"I'm just looking for a great opportunity."</div>
+      <div>"I want to grow."</div>
+      <div>"I'm passionate about [your domain]."</div>
+      <div>"I've heard good things about the team."</div>
+      <div>"It's a great company."</div>
+      <div>"I just want my next role."</div>
+    </div>
+  </div>
+
+  <footer class="page-footer">
+    <div class="left">One of a series for tech ICs in the 2026 market.</div>
+    <div class="right">empathinterviews.com</div>
+  </footer>
+</div>
+</body>
+</html>

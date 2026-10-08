@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SOAR: Stories That Land - Empath Interview Prep</title>
+<link rel="stylesheet" href="_base.css">
+<style>
+  /* Timeline bar */
+  .timeline-label {
+    font-size: 9pt;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 0.1in;
+  }
+  .timeline-bar {
+    display: grid;
+    grid-template-columns: 12.5% 25% 50% 12.5%;
+    height: 0.72in;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .tl-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 600;
+  }
+  .tl-cell .letter {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 24pt;
+    line-height: 1;
+  }
+  .tl-cell .secs {
+    font-size: 9pt;
+    margin-top: 0.04in;
+    opacity: 0.9;
+    font-weight: 500;
+  }
+  .tl-s { background: #8fb4c0; color: var(--navy-dark); }
+  .tl-o { background: var(--orange); }
+  .tl-a { background: var(--navy); }
+  .tl-r { background: var(--green); }
+
+  .timeline-axis {
+    display: grid;
+    grid-template-columns: 12.5% 25% 50% 12.5%;
+    font-size: 9pt;
+    color: var(--text-muted);
+    margin-top: 0.06in;
+    padding-top: 0.06in;
+    border-top: 1px solid var(--border);
+  }
+  .timeline-axis div { padding-left: 0; }
+  .timeline-axis div:last-child { text-align: right; }
+
+  /* Cards */
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 0.16in;
+    margin-top: 0.28in;
+  }
+  .card {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+  }
+  .card-head {
+    padding: 0.1in 0.14in;
+    color: #fff;
+    text-align: center;
+    font-size: 10pt;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+  .card-body {
+    padding: 0.16in 0.16in 0.16in;
+    background: #fff;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1in;
+    font-size: 9.5pt;
+    line-height: 1.4;
+  }
+  .card-body .head {
+    font-weight: 700;
+    color: var(--navy-dark);
+    font-size: 10.5pt;
+  }
+  .card-mistake {
+    font-style: italic;
+    font-size: 9pt;
+    line-height: 1.35;
+  }
+  .card-pct {
+    margin-top: auto;
+    font-weight: 700;
+    font-size: 10pt;
+    color: var(--navy-dark);
+  }
+  .c-s .card-head { background: var(--navy); }
+  .c-o .card-head { background: var(--orange); }
+  .c-a .card-head { background: var(--navy); }
+  .c-r .card-head { background: var(--green); }
+
+  .c-s .card-mistake { color: var(--rose); }
+  .c-o .card-mistake { color: var(--rose); }
+  .c-a .card-mistake { color: var(--green); }
+  .c-r .card-mistake { color: var(--rose); }
+
+  /* Library list */
+  .library {
+    margin-top: 0.3in;
+  }
+  .library-label {
+    font-size: 9.5pt;
+    letter-spacing: 0.14em;
+    color: var(--navy-dark);
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 0.1in;
+  }
+  .library-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.05in 0.3in;
+    font-size: 10pt;
+  }
+  .library-grid div::before { content: "•  "; color: var(--orange); font-weight: 700; }
+
+  /* Examples page */
+  .example {
+    border: 1px solid var(--border);
+    border-left: 5px solid var(--navy);
+    border-radius: 8px;
+    padding: 0.06in 0.14in 0.08in;
+    margin-bottom: 0.05in;
+    background: #fff;
+  }
+  .example.b { border-left-color: var(--orange); }
+  .example.c { border-left-color: var(--green); }
+
+  .ex-header-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.16in;
+    margin-bottom: 0.08in;
+  }
+  .ex-tag {
+    display: inline-block;
+    font-size: 8pt;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.03in 0.09in;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .example.a .ex-tag { background: var(--navy-tint); color: var(--navy-dark); }
+  .example.b .ex-tag { background: var(--orange-tint); color: #6b4321; }
+  .example.c .ex-tag { background: var(--green-tint); color: #224537; }
+
+  .ex-title {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 13pt;
+    color: var(--navy-dark);
+    line-height: 1.1;
+  }
+  .ex-row {
+    display: grid;
+    grid-template-columns: 0.36in 1fr;
+    gap: 0.06in;
+    padding: 0.025in 0;
+    font-size: 9.5pt;
+    line-height: 1.35;
+  }
+  .ex-row + .ex-row { border-top: 1px dashed var(--border); }
+  .ex-letter {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 13pt;
+    line-height: 1;
+    padding-top: 0.02in;
+  }
+  .example.a .ex-letter { color: var(--navy); }
+  .example.b .ex-letter { color: var(--orange); }
+  .example.c .ex-letter { color: var(--green); }
+
+  .ex-text .ex-head {
+    font-size: 8pt;
+    letter-spacing: 0.14em;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 0.02in;
+  }
+
+  .page2-intro { margin-bottom: 0.1in; }
+</style>
+</head>
+<body>
+
+<!-- ============== PAGE 1: framework ============== -->
+<div class="page">
+  <header class="page-header">
+    <div class="brand">Empath Interview Prep</div>
+    <div class="header-right">Resources for the 2026 tech job market</div>
+  </header>
+
+  <div class="eyebrow">RESOURCE 10 · BEHAVIORAL</div>
+  <h1 class="title">SOAR: Stories That Land</h1>
+  <p class="subtitle">Spend more time on the obstacle and the actions than on the context, and your behavioral answers stop wandering.</p>
+
+  <div class="lead-gap"></div>
+
+  <div class="timeline-label">Time allocation for a 2-minute behavioral answer</div>
+  <div class="timeline-bar">
+    <div class="tl-cell tl-s"><div class="letter">S</div><div class="secs">~15s</div></div>
+    <div class="tl-cell tl-o"><div class="letter">O</div><div class="secs">~30s</div></div>
+    <div class="tl-cell tl-a"><div class="letter">A</div><div class="secs">~60s</div></div>
+    <div class="tl-cell tl-r"><div class="letter">R</div><div class="secs">~15s</div></div>
+  </div>
+  <div class="timeline-axis">
+    <div>0s</div><div>15s</div><div>45s</div><div>105s &nbsp;&nbsp;&nbsp; 120s</div>
+  </div>
+
+  <div class="cards">
+    <div class="card c-s">
+      <div class="card-head">SITUATION</div>
+      <div class="card-body">
+        <div class="head">The context.</div>
+        <div>One or two sentences. Project, your role, what the team was trying to do.</div>
+        <div class="card-mistake">Common mistake: spending half the answer here.</div>
+        <div class="card-pct">12% of time</div>
+      </div>
+    </div>
+    <div class="card c-o">
+      <div class="card-head">OBSTACLES</div>
+      <div class="card-body">
+        <div class="head">What made this hard.</div>
+        <div>The interesting part. What was at stake, unknown, contested. Constraints, conflict.</div>
+        <div class="card-mistake">Common mistake: skipping this entirely and rushing to action.</div>
+        <div class="card-pct">25% of time</div>
+      </div>
+    </div>
+    <div class="card c-a">
+      <div class="card-head">ACTIONS</div>
+      <div class="card-body">
+        <div class="head">What you did.</div>
+        <div>Use "I," not "we." Decisions, conversations, tradeoffs. Specifics.</div>
+        <div class="card-mistake" style="color: var(--green);">The largest budget. This is what the interviewer evaluates.</div>
+        <div class="card-pct">50% of time</div>
+      </div>
+    </div>
+    <div class="card c-r">
+      <div class="card-head">RESULTS</div>
+      <div class="card-body">
+        <div class="head">What happened.</div>
+        <div>Quantify when possible. Business impact, technical outcome, customer effect.</div>
+        <div class="card-mistake">Common mistake: burying the outcome under more context.</div>
+        <div class="card-pct">13% of time</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="library">
+    <div class="library-label">Build a library of 5-10 stories covering:</div>
+    <div class="library-grid">
+      <div>Leading without authority</div>
+      <div>Owning ambiguity</div>
+      <div>Mentoring or unblocking someone</div>
+      <div>Handling conflict</div>
+      <div>Prioritizing under pressure</div>
+      <div>Pushing back on a decision</div>
+      <div>A tough technical tradeoff</div>
+      <div>Failing and learning</div>
+      <div>Cross-team collaboration</div>
+    </div>
+  </div>
+
+  <footer class="page-footer">
+    <div class="left">One of a series for tech ICs in the 2026 market.</div>
+    <div class="right">empathinterviews.com</div>
+  </footer>
+</div>
+
+<!-- ============== PAGE 2: examples ============== -->
+<div class="page">
+  <header class="page-header">
+    <div class="brand">Empath Interview Prep</div>
+    <div class="header-right">Resources for the 2026 tech job market</div>
+  </header>
+
+  <div class="eyebrow">RESOURCE 10 · BEHAVIORAL · EXAMPLES</div>
+  <h1 class="title" style="font-size: 18pt; margin-bottom: 0.1in;">Three SOAR stories in full</h1>
+
+  <div class="example a">
+    <div class="ex-header-row">
+      <div class="ex-tag">LEADING WITHOUT AUTHORITY</div>
+      <div class="ex-title">The API contract nobody could agree on.</div>
+    </div>
+    <div class="ex-row">
+      <div class="ex-letter">S</div>
+      <div class="ex-text">
+        <div class="ex-head">Situation</div>
+        I was a senior IC on a four-person backend team rebuilding the billing API. No tech lead on the team.
+      </div>
+    </div>
+    <div class="ex-row">
+      <div class="ex-letter">O</div>
+      <div class="ex-text">
+        <div class="ex-head">Obstacles</div>
+        Our manager left mid-quarter. Three engineers, three different proposals for the contract. PM was waiting on a decision to plan downstream work. Six weeks until the deadline and nobody had authority to call it.
+      </div>
+    </div>
+    <div class="ex-row">
+      <div class="ex-letter">A</div>
+      <div class="ex-text">
+        <div class="ex-head">Actions</div>
+        I set up a daily 20-minute sync. Built a decision matrix with five axes: latency, schema flexibility, migration cost, blast radius, and team familiarity. Walked through it in a doc, named my pick, and asked for written disagreement by Friday. When two engineers pushed back, I rewrote the matrix with their inputs and re-shared. I also volunteered to write the integration tests so they could keep moving.
+      </div>
+    </div>
+    <div class="ex-row">
+      <div class="ex-letter">R</div>
+      <div class="ex-text">
+        <div class="ex-head">Results</div>
+        Shipped on time. The contract has held through three follow-on features. I was promoted that cycle, and the matrix template is still in our team doc.
+      </div>
+    </div>
+  </div>
+
+  <div class="example b">
+    <div class="ex-header-row">
+      <div class="ex-tag">FAILING AND LEARNING</div>
+      <div class="ex-title">The migration that almost cost us $30K a day.</div>
+    </div>
+    <div class="ex-row">
+      <div class="ex-letter">S</div>
+      <div class="ex-text">
+        <div class="ex-head">Situation</div>
+        I led the migration of our payment service to a new processor.
+      </div>
+    </div>
+    <div class="ex-row">
+      <div class="ex-letter">O</div>
+      <div class="ex-text">
+        <div class="ex-head">Obstacles</div>
+        I underestimated the reconciliation work. In week one of the rollout, finance flagged a daily delta of around $30K that we couldn't explain. The CFO wanted to roll back; I had two days to prove we shouldn't.
+      </div>
+    </div>
+    <div class="ex-row">
+      <div class="ex-letter">A</div>
+      <div class="ex-text">
+        <div class="ex-head">Actions</div>
+        I paused new traffic at 10%. Ran a three-day audit with one engineer and one finance analyst. Found a missing field in the mapping for partial refunds. Wrote a backfill script, paired with finance to verify it against three months of history, and built a pre-flight check that compares end-to-end ledgers before any future cutover.
+      </div>
+    </div>
+    <div class="ex-row">
+      <div class="ex-letter">R</div>
+      <div class="ex-text">
+        <div class="ex-head">Results</div>
+        Caught the bug before full rollout. Wrote the postmortem; the pre-flight check is now standard on every migration my team runs.
+      </div>
+    </div>
+  </div>
+
+  <div class="example c">
+    <div class="ex-header-row">
+      <div class="ex-tag">PUSHING BACK ON A DECISION</div>
+      <div class="ex-title">When the VP wanted to skip the load test.</div>
+    </div>
+    <div class="ex-row">
+      <div class="ex-letter">S</div>
+      <div class="ex-text">
+        <div class="ex-head">Situation</div>
+        We were two weeks from launching a new onboarding flow expected to triple sign-up traffic.
+      </div>
+    </div>
+    <div class="ex-row">
+      <div class="ex-letter">O</div>
+      <div class="ex-text">
+        <div class="ex-head">Obstacles</div>
+        The VP wanted to cut the load test to hit the date. I disagreed, but I was the most junior engineer in the room and our staff engineer had stayed quiet.
+      </div>
+    </div>
+    <div class="ex-row">
+      <div class="ex-letter">A</div>
+      <div class="ex-text">
+        <div class="ex-head">Actions</div>
+        I put the risk in dollars: $40K per hour of downtime, 35% chance of a capacity issue. Proposed a four-hour pared-down test instead of the two-day one. Sent it in writing, copied the staff engineer.
+      </div>
+    </div>
+    <div class="ex-row">
+      <div class="ex-letter">R</div>
+      <div class="ex-text">
+        <div class="ex-head">Results</div>
+        Surfaced two queue-depth issues we'd have hit in production. Launch was clean. Load tests are now standard.
+      </div>
+    </div>
+  </div>
+
+  <footer class="page-footer">
+    <div class="left">One of a series for tech ICs in the 2026 market.</div>
+    <div class="right">empathinterviews.com</div>
+  </footer>
+</div>
+
+</body>
+</html>
