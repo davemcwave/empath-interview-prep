@@ -555,6 +555,95 @@ h1, h2, h3, h4 {
 }
 
 /* ============================================================
+   TESTIMONIALS
+============================================================ */
+.says {
+  padding-block: var(--space-4xl);
+  background-color: var(--color-bg);
+  background-image: var(--grain);
+  background-size: var(--grain-tile);
+  border-top: 1px solid var(--color-rule);
+  border-bottom: 1px solid var(--color-rule);
+}
+
+.says__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-xl);
+  margin-top: var(--space-2xl);
+  padding-block: var(--space-sm);
+}
+
+/* Sticky notes. Angles are deliberately small - these quotes run 55-65 words,
+   and past about 2deg the text gets uncomfortable to read. */
+.say {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin: 0;
+  /* sticky notes are square */
+  aspect-ratio: 1;
+  background-color: var(--tint-sand);
+  padding: var(--space-lg);
+  /* The corner is genuinely cut away rather than covered over. clip-path
+     also clips box-shadow, so the lift has to come from drop-shadow, which
+     traces the clipped silhouette and so follows the dog-ear. */
+  clip-path: polygon(0 0, calc(100% - 26px) 0, 100% 26px, 100% 100%, 0 100%);
+  filter: drop-shadow(0 4px 12px rgba(15, 15, 15, 0.09));
+}
+
+/* the flap: the triangle of paper folded forward, sitting inside the cut */
+.say::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 26px;
+  height: 26px;
+  background-color: rgba(28, 28, 30, 0.14);
+  clip-path: polygon(0 0, 100% 100%, 0 100%);
+}
+
+.says__grid > .say:nth-child(1) {
+  background-color: var(--tint-sand);
+  transform: rotate(-1.2deg);
+}
+
+.says__grid > .say:nth-child(2) {
+  background-color: var(--tint-peach);
+  transform: rotate(0.7deg);
+}
+
+.says__grid > .say:nth-child(3) {
+  background-color: var(--tint-sky);
+  transform: rotate(-0.5deg);
+}
+
+.say__quote {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--color-text);
+  /* belt and braces: the clip already trims, this stops a stray line
+     pushing the name out of the square */
+  overflow: hidden;
+}
+
+.say__who {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin-top: auto;
+}
+
+.say__name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* ============================================================
    WHY EMPATH (PILLARS)
 ============================================================ */
 .pillars {
@@ -1910,7 +1999,8 @@ h1, h2, h3, h4 {
 }
 
 @media (max-width: 1024px) {
-  .proof__grid {
+  .proof__grid,
+  .says__grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -2156,8 +2246,12 @@ h1, h2, h3, h4 {
   /* Hero */
   .hero {
     min-height: auto;
-    padding-top: calc(var(--nav-height) + var(--space-2xl));
-    padding-bottom: var(--space-3xl);
+    padding-top: calc(var(--nav-height) + var(--space-xl));
+    padding-bottom: var(--space-xl);
+  }
+
+  .says {
+    padding-block: var(--space-2xl);
   }
 
   .hero__inner {
@@ -2224,6 +2318,20 @@ h1, h2, h3, h4 {
 
   .hero__badge {
     font-size: 0.8125rem;
+  }
+
+  .says__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .says__grid > .say:nth-child(1),
+  .says__grid > .say:nth-child(2),
+  .says__grid > .say:nth-child(3) {
+    transform: none;
+  }
+
+  .say {
+    aspect-ratio: auto;
   }
 
   /* Pillars */
