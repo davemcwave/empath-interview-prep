@@ -167,7 +167,7 @@
 
     fadeElements.forEach(function (el) {
       // Hero section uses CSS animation directly; mark visible immediately
-      if (el.closest('.hero')) {
+      if (el.closest('.intro')) {
         el.classList.add('is-visible');
         return;
       }
@@ -293,3 +293,26 @@
       });
   });
 })();
+
+/* ============================================================
+   ANALYTICS EVENTS
+   Counts clicks on booking links and form submissions in GA4.
+============================================================ */
+(function () {
+  'use strict';
+
+  function send(name, params) {
+    if (typeof window.gtag === 'function') window.gtag('event', name, params);
+  }
+
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a[href*="calendly.com"]') : null;
+    if (a) send('book_call_click', { page_path: location.pathname });
+  });
+
+  document.addEventListener('submit', function (e) {
+    if (e.target.action && e.target.action.indexOf('formspree.io') !== -1) {
+      send('form_submit_attempt', { page_path: location.pathname });
+    }
+  });
+}());

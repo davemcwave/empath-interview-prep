@@ -7,3 +7,15 @@ reddit-strategy.md
 digest/
 
 .DS_Store
+
+# Private lead and client data. The repo is the public site, so never commit these.
+LEADS.md
+leads_report.txt
+empath_leads_crm.csv
+analysis_leads.py
+Basic_LinkedInDataExport*/
+research_notes/
+reports/
+
+# Local redesign draft
+_preview/
